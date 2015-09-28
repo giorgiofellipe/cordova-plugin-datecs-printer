@@ -1,0 +1,32 @@
+{
+  "name": "cordova-plugin-datecs-printer",
+  "version": "0.0.1",
+  "description": "Cordova Datecs Printer Plugin",
+  "cordova": {
+    "id": "cordova-plugin-datecs-printer",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/giorgiofellipe/cordova-plugin-datecs-printer"
+  },
+  "keywords": [
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-android",
+    "datecs",
+    "printer",
+    "bluetooth"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.1.0"
+    }
+  ],
+  "author": "Apache Software Foundation",
+  "license": "Apache 2.0"
+}
+
