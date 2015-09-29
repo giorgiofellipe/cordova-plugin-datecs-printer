@@ -11,7 +11,7 @@ public class Printer extends CordovaPlugin {
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		if (action.equals("teste")) {
-				getTeste(callbackContext);
+				this.getTeste(callbackContext);
 				return true;
 		}
 		return false;
@@ -20,6 +20,8 @@ public class Printer extends CordovaPlugin {
 	protected void getTeste(CallbackContext callbackContext) {
 		JSONArray json = new JSONArray();
 		json.put("teste");
+		json.put("outro");
+		json.put("mais um");
 		callbackContext.success(json);
 	}
 }
