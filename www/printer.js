@@ -14,7 +14,7 @@ var printer = {
   },
 
   teste: function(onSuccess, onError) {
-    exec(onSuccess, onError, 'Printer', 'teste');
+    exec(onSuccess, onError, 'Printer', 'teste', {});
   }
 };
 
