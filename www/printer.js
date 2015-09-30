@@ -14,7 +14,15 @@ var printer = {
   },
 
   teste: function(onSuccess, onError) {
-    exec(onSuccess, onError, 'Printer', 'teste', []);
+    exec(onSuccess, onError, 'DatecsPrinter', 'teste', []);
+  },
+
+  listBluetoothDevices: function(onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'listBluetoothDevices', []);
+  },
+
+  connect: function(address, onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'connect', [address]);
   }
 };
 
