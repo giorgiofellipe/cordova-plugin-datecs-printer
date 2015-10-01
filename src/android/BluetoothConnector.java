@@ -1,5 +1,11 @@
 package com.giorgiofellipe.datecsprinter;
 
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
