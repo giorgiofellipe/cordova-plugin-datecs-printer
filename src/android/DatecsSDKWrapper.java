@@ -2,6 +2,7 @@ package com.giorgiofellipe.datecsprinter;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaInterface;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,12 +28,11 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
 import com.datecs.api.BuildInfo;
-import com.datecs.api.card.FinancialCard;
 import com.datecs.api.printer.PrinterInformation;
 import com.datecs.api.printer.Printer;
 import com.datecs.api.printer.ProtocolAdapter;
 
-public class BluetoothConnector {
+public class DatecsSDKWrapper {
     private static final String LOG_TAG = "BluetoothPrinter";
     private Printer mPrinter;
     private ProtocolAdapter mProtocolAdapter;
@@ -41,6 +41,7 @@ public class BluetoothConnector {
     private String mAddress;
     private CallbackContext mConnectCallbackContext;
     private ProgressDialog mDialog;
+    private CordovaInterface mCordova;
 
     /**
      * Interface de eventos da Impressora
@@ -100,7 +101,7 @@ public class BluetoothConnector {
             }
             if (!mBluetoothAdapter.isEnabled()) {
                 Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                this.cordova.getActivity().startActivityForResult(enableBluetooth, 0);
+                this.mCordova.getActivity().startActivityForResult(enableBluetooth, 0);
             }
             Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
             if (pairedDevices.size() > 0) {
@@ -133,12 +134,17 @@ public class BluetoothConnector {
         mAddress = address;
     }
 
+    public void setCordova(CordovaInterface cordova) {
+        mCordova = cordova;
+    }
+
     /**
      * Valida o endereço da impressora e efetua a conexão
      *
      * @param callbackContext
      */
     protected void connect(CallbackContext callbackContext) {
+        mConnectCallbackContext = callbackContext;
         closeActiveConnections();
         if (BluetoothAdapter.checkBluetoothAddress(mAddress)) {
             establishBluetoothConnection(mAddress, callbackContext);
@@ -284,6 +290,23 @@ public class BluetoothConnector {
     }
 
     /**
+     * Alimenta papel à impressora (rola papel em branco)
+     *
+     * @param linesQuantity
+     */
+    private void feedPaper(int linesQuantity) {
+        if (linesQuantity < 0 || linesQuantity > 255) {
+            mConnectCallbackContext.error("A quantidade de linhas deve estar entre 0 e 255")
+        }
+        try {
+            mPrinter.feedPaper(linesQuantity);
+        } catch (Exception e) {
+            mConnectCallbackContext.error("Erro ao alimentar papel à impressora: " + e.getMessage());
+        }
+        mConnectCallbackContext.success();
+    }
+
+    /**
      * Wrapper para criação de Threads
      *
      * @param job
@@ -292,11 +315,11 @@ public class BluetoothConnector {
      */
     private void runJob(final Runnable job, final String jobTitle, final String jobName) {
         // Start the job from main thread
-        cordova.getActivity().runOnUiThread(new Runnable() {
+        mCordova.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 // Progress dialog available due job execution
-                final ProgressDialog dialog = new ProgressDialog(cordova.getActivity());
+                final ProgressDialog dialog = new ProgressDialog(mCordova.getActivity());
                 dialog.setTitle(jobTitle);
                 dialog.setMessage(jobName);
                 dialog.setCancelable(false);
@@ -325,10 +348,10 @@ public class BluetoothConnector {
      * @param resetConnection
      */
     private void showError(final String text, boolean resetConnection) {
-        cordova.getActivity().runOnUiThread(new Runnable() {
+        mCordova.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(cordova.getActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mCordova.getActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
             }
         });
         if (resetConnection) {
@@ -342,11 +365,11 @@ public class BluetoothConnector {
      * @param text
      */
     private void showToast(final String text) {
-        cordova.getActivity().runOnUiThread(new Runnable() {
+        mCordova.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (!cordova.getActivity().isFinishing()) {
-                    Toast.makeText(cordova.getActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                if (!mCordova.getActivity().isFinishing()) {
+                    Toast.makeText(mCordova.getActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
                 }
             }
         });

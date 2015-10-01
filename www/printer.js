@@ -13,16 +13,17 @@ var printer = {
     return false;
   },
 
-  teste: function(onSuccess, onError) {
-    exec(onSuccess, onError, 'DatecsPrinter', 'teste', []);
-  },
-
   listBluetoothDevices: function(onSuccess, onError) {
     exec(onSuccess, onError, 'DatecsPrinter', 'listBluetoothDevices', []);
   },
-
   connect: function(address, onSuccess, onError) {
     exec(onSuccess, onError, 'DatecsPrinter', 'connect', [address]);
+  },
+  disconnect: function(onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'disconnect', []);
+  },
+  feedPaper: function(lines, onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'feedPaper', [lines])
   }
 };
 
