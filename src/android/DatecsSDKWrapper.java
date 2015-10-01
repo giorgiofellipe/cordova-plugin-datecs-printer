@@ -300,6 +300,7 @@ public class DatecsSDKWrapper {
         }
         try {
             mPrinter.feedPaper(linesQuantity);
+            mPrinter.flush();
         } catch (Exception e) {
             mConnectCallbackContext.error("Erro ao alimentar papel à impressora: " + e.getMessage());
         }
@@ -324,6 +325,7 @@ public class DatecsSDKWrapper {
     public void printTaggedText(String text, String charset) {
         try {
             mPrinter.printTaggedText(text, charset);
+            mPrinter.flush();
         } catch (Exception e) {
             mConnectCallbackContext.error("Erro ao imprimir: " + e.getMessage());
         }
