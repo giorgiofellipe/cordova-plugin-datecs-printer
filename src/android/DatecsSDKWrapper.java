@@ -154,7 +154,7 @@ public class DatecsSDKWrapper {
     /**
      * Encerra todas as conexões com impressoras e dispositivos Bluetooth ativas
      */
-    private synchronized void closeActiveConnections() {
+    public synchronized void closeActiveConnections() {
         closePrinterConnection();
         closeBluetoothConnection();
     }
@@ -294,14 +294,38 @@ public class DatecsSDKWrapper {
      *
      * @param linesQuantity
      */
-    private void feedPaper(int linesQuantity) {
+    public void feedPaper(int linesQuantity) {
         if (linesQuantity < 0 || linesQuantity > 255) {
-            mConnectCallbackContext.error("A quantidade de linhas deve estar entre 0 e 255")
+            mConnectCallbackContext.error("A quantidade de linhas deve estar entre 0 e 255");
         }
         try {
             mPrinter.feedPaper(linesQuantity);
         } catch (Exception e) {
             mConnectCallbackContext.error("Erro ao alimentar papel à impressora: " + e.getMessage());
+        }
+        mConnectCallbackContext.success();
+    }
+
+    /**
+     * Print text expecting markup formatting tags (default encoding is utf8)
+     *
+     * @param text
+     */
+    public void printTaggedText(String text) {
+        printTaggedText(text, "UTF8");
+    }
+
+    /**
+     * Print text expecting markup formatting tags and a defined charset
+     *
+     * @param text
+     * @param charset
+     */
+    public void printTaggedText(String text, String charset) {
+        try {
+            mPrinter.printTaggedText(text, charset);
+        } catch (Exception e) {
+            mConnectCallbackContext.error("Erro ao imprimir: " + e.getMessage());
         }
         mConnectCallbackContext.success();
     }

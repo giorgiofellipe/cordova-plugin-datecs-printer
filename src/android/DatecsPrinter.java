@@ -10,17 +10,17 @@ public class DatecsPrinter extends CordovaPlugin {
 	private static final DatecsSDKWrapper printer = new DatecsSDKWrapper();
 	private enum Option {
 		listBluetoothDevices,
-		connect,
-		disconnect,
-		feedPaper,
-		printText,
-		getStatus,
-		getTemperature,
-		printBarcode,
-		printImage,
-		printLogo,
-		printSelfTest,
-		read;
+				connect,
+				disconnect,
+				feedPaper,
+				printText,
+				getStatus,
+				getTemperature,
+				printBarcode,
+				printImage,
+				printLogo,
+				printSelfTest,
+				read;
 	}
 
 	@Override
@@ -46,11 +46,16 @@ public class DatecsPrinter extends CordovaPlugin {
 					printer.closeActiveConnections();
 					callbackContext.success("Impressora desconectada");
 				} catch (Exception e) {
-					callbackContext.error("Erro ao desconectar impressora: " + e.getMessage())
+					callbackContext.error("Erro ao desconectar impressora: " + e.getMessage());
 				}
 				break;
 			case feedPaper:
 				printer.feedPaper(args.getInt(0));
+				break;
+			case printText:
+				String text = args.getString(0);
+				String charset = args.getString(1);
+				printer.printTaggedText(text, charset);
 				break;
 		}
 		return true;

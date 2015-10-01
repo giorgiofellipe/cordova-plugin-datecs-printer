@@ -23,7 +23,10 @@ var printer = {
     exec(onSuccess, onError, 'DatecsPrinter', 'disconnect', []);
   },
   feedPaper: function(lines, onSuccess, onError) {
-    exec(onSuccess, onError, 'DatecsPrinter', 'feedPaper', [lines])
+    exec(onSuccess, onError, 'DatecsPrinter', 'feedPaper', [lines]);
+  },
+  printText: function(text, charset, onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'printText', [text, charset]);
   }
 };
 
