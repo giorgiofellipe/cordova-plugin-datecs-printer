@@ -19,8 +19,7 @@ public class DatecsPrinter extends CordovaPlugin {
 				printBarcode,
 				printImage,
 				printLogo,
-				printSelfTest,
-				read;
+				printSelfTest;
 	}
 
 	@Override
@@ -56,6 +55,24 @@ public class DatecsPrinter extends CordovaPlugin {
 				String text = args.getString(0);
 				String charset = args.getString(1);
 				printer.printTaggedText(text, charset);
+				break;
+			case getStatus:
+				printer.getStatus();
+				break;
+			case getTemperature:
+				printer.getTemperature();
+				break;
+			case printBarcode:
+				Int type = args.getInt(0);
+				String data = args.getString(1);
+				printer.printBarcode(type, data);
+				break;
+			case printImage:
+				break;
+			case printLogo:
+				break;
+			case printSelfTest:
+				printer.printSelfTest();
 				break;
 		}
 		return true;

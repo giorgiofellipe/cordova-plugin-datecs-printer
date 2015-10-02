@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.net.Socket;
@@ -86,6 +87,15 @@ public class DatecsSDKWrapper {
         }
     };
 
+    private Map<Integer, String> errorCode = ImmutableMap.of(
+            1, "Adaptador Bluetooth não disponível",
+            2, "Nenhum dispositivo Bluetooth encontrado"
+    );
+
+    private JSONObject getErrorByCode(int code) {
+        return new JSONObject().put("errorCode", code).put("message", errorCode.get(code));
+    }
+
     /**
      * Busca todos os dispositivos Bluetooth pareados com o device
      *
@@ -96,7 +106,7 @@ public class DatecsSDKWrapper {
         try {
             mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             if (mBluetoothAdapter == null) {
-                callbackContext.error("Adaptador Bluetooth não disponível");
+                callbackContext.error(this.getErrorByCode(1));
                 return;
             }
             if (!mBluetoothAdapter.isEnabled()) {
@@ -116,7 +126,7 @@ public class DatecsSDKWrapper {
                 }
                 callbackContext.success(json);
             } else {
-                callbackContext.error("Nenhum dispositivo Bluetooth encontrado");
+                callbackContext.error(this.getErrorByCode(2));
             }
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage());
@@ -301,19 +311,19 @@ public class DatecsSDKWrapper {
         try {
             mPrinter.feedPaper(linesQuantity);
             mPrinter.flush();
+            mConnectCallbackContext.success();
         } catch (Exception e) {
             mConnectCallbackContext.error("Erro ao alimentar papel à impressora: " + e.getMessage());
         }
-        mConnectCallbackContext.success();
     }
 
     /**
-     * Print text expecting markup formatting tags (default encoding is utf8)
+     * Print text expecting markup formatting tags (default encoding is ISO-8859-1)
      *
      * @param text
      */
     public void printTaggedText(String text) {
-        printTaggedText(text, "UTF8");
+        printTaggedText(text, "ISO-8859-1");
     }
 
     /**
@@ -326,10 +336,63 @@ public class DatecsSDKWrapper {
         try {
             mPrinter.printTaggedText(text, charset);
             mPrinter.flush();
+            mConnectCallbackContext.success();
         } catch (Exception e) {
             mConnectCallbackContext.error("Erro ao imprimir: " + e.getMessage());
         }
-        mConnectCallbackContext.success();
+    }
+
+    /**
+     * Return what is the Printer current status
+     */
+    public void getStatus() {
+        try {
+            int status = mPrinter.getStatus();
+            mConnectCallbackContext.success(status);
+        } catch (Exception e) {
+            mConnectCallbackContext.error("Erro ao buscar status: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Return Printer's head temperature
+     */
+    public void getTemperature() {
+        try {
+            int temperature = mPrinter.getTemperature();
+            mConnectCallbackContext.success(temperature);
+        } catch (Exception e) {
+            mConnectCallbackContext.error("Erro ao buscar temperatura: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Print a Barcode
+     *
+     * @param type
+     * @param data
+     */
+    public void printBarcode(int type, String data) {
+        try {
+            mPrinter.printBarcode(type, data);
+            mPrinter.flush();
+            mConnectCallbackContext.success();
+        } catch (Exception e) {
+            mConnectCallbackContext.error("Erro ao imprimir código de barras: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Print a selftest page
+     */
+    public void printSelfTest() {
+        try {
+            mPrinter.printSelfTest();
+            mPrinter.flush();
+            mConnectCallbackContext.success();
+        } catch (Exception e) {
+            mConnectCallbackContext.error("Erro ao imprimir página de teste: " + e.getMessage());
+        }
     }
 
     /**
