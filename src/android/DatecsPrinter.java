@@ -25,6 +25,7 @@ public class DatecsPrinter extends CordovaPlugin {
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		printer.setCordova(cordova);
+		printer.setCallbackContext(callbackContext);
 
 		Option option = null;
 		try {
@@ -63,7 +64,7 @@ public class DatecsPrinter extends CordovaPlugin {
 				printer.getTemperature();
 				break;
 			case printBarcode:
-				Int type = args.getInt(0);
+				int type = args.getInt(0);
 				String data = args.getString(1);
 				printer.printBarcode(type, data);
 				break;

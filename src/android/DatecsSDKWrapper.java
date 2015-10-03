@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 import java.net.Socket;
@@ -41,6 +42,7 @@ public class DatecsSDKWrapper {
     private boolean mRestart;
     private String mAddress;
     private CallbackContext mConnectCallbackContext;
+    private CallbackContext mCallbackContext;
     private ProgressDialog mDialog;
     private CordovaInterface mCordova;
 
@@ -64,8 +66,7 @@ public class DatecsSDKWrapper {
         }
 
         @Override
-        public void onPaperReady(boolean state) {
-            if (state) {
+        public void onPaperReady(boolean state) {            if (state) {
                 showToast("Papel ok");
             } else {
                 showToast("Sem papel");
@@ -87,13 +88,21 @@ public class DatecsSDKWrapper {
         }
     };
 
-    private Map<Integer, String> errorCode = ImmutableMap.of(
-            1, "Adaptador Bluetooth não disponível",
-            2, "Nenhum dispositivo Bluetooth encontrado"
-    );
+    private Map<Integer, String> errorCode = new HashMap<Integer, String>(){{
+        put(1, "Adaptador Bluetooth não disponível");
+        put(2, "Nenhum dispositivo Bluetooth encontrado");
+    }};
 
     private JSONObject getErrorByCode(int code) {
-        return new JSONObject().put("errorCode", code).put("message", errorCode.get(code));
+        JSONObject json = new JSONObject();
+        try {
+            json.put("errorCode", code);
+            json.put("message", errorCode.get(code));
+        } catch (Exception e) {
+            Log.e(LOG_TAG, e.getMessage());
+            showToast(e.getMessage());
+        }
+        return json;
     }
 
     /**
@@ -146,6 +155,15 @@ public class DatecsSDKWrapper {
 
     public void setCordova(CordovaInterface cordova) {
         mCordova = cordova;
+    }
+
+    /**
+     * CallbackContext de cada requisição, que efetivamente recebe os retornos dos métodos
+     *
+     * @param callbackContext
+     */
+    public void setCallbackContext(CallbackContext callbackContext) {
+        mCallbackContext = callbackContext;
     }
 
     /**
@@ -306,14 +324,14 @@ public class DatecsSDKWrapper {
      */
     public void feedPaper(int linesQuantity) {
         if (linesQuantity < 0 || linesQuantity > 255) {
-            mConnectCallbackContext.error("A quantidade de linhas deve estar entre 0 e 255");
+            mCallbackContext.error("A quantidade de linhas deve estar entre 0 e 255");
         }
         try {
             mPrinter.feedPaper(linesQuantity);
             mPrinter.flush();
-            mConnectCallbackContext.success();
+            mCallbackContext.success();
         } catch (Exception e) {
-            mConnectCallbackContext.error("Erro ao alimentar papel à impressora: " + e.getMessage());
+            mCallbackContext.error("Erro ao alimentar papel à impressora: " + e.getMessage());
         }
     }
 
@@ -336,9 +354,9 @@ public class DatecsSDKWrapper {
         try {
             mPrinter.printTaggedText(text, charset);
             mPrinter.flush();
-            mConnectCallbackContext.success();
+            mCallbackContext.success();
         } catch (Exception e) {
-            mConnectCallbackContext.error("Erro ao imprimir: " + e.getMessage());
+            mCallbackContext.error("Erro ao imprimir: " + e.getMessage());
         }
     }
 
@@ -348,9 +366,9 @@ public class DatecsSDKWrapper {
     public void getStatus() {
         try {
             int status = mPrinter.getStatus();
-            mConnectCallbackContext.success(status);
+            mCallbackContext.success(status);
         } catch (Exception e) {
-            mConnectCallbackContext.error("Erro ao buscar status: " + e.getMessage());
+            mCallbackContext.error("Erro ao buscar status: " + e.getMessage());
         }
     }
 
@@ -360,9 +378,9 @@ public class DatecsSDKWrapper {
     public void getTemperature() {
         try {
             int temperature = mPrinter.getTemperature();
-            mConnectCallbackContext.success(temperature);
+            mCallbackContext.success(temperature);
         } catch (Exception e) {
-            mConnectCallbackContext.error("Erro ao buscar temperatura: " + e.getMessage());
+            mCallbackContext.error("Erro ao buscar temperatura: " + e.getMessage());
         }
     }
 
@@ -376,9 +394,9 @@ public class DatecsSDKWrapper {
         try {
             mPrinter.printBarcode(type, data);
             mPrinter.flush();
-            mConnectCallbackContext.success();
+            mCallbackContext.success();
         } catch (Exception e) {
-            mConnectCallbackContext.error("Erro ao imprimir código de barras: " + e.getMessage());
+            mCallbackContext.error("Erro ao imprimir código de barras: " + e.getMessage());
         }
     }
 
@@ -389,9 +407,9 @@ public class DatecsSDKWrapper {
         try {
             mPrinter.printSelfTest();
             mPrinter.flush();
-            mConnectCallbackContext.success();
+            mCallbackContext.success();
         } catch (Exception e) {
-            mConnectCallbackContext.error("Erro ao imprimir página de teste: " + e.getMessage());
+            mCallbackContext.error("Erro ao imprimir página de teste: " + e.getMessage());
         }
     }
 
