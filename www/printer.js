@@ -37,8 +37,11 @@ var printer = {
   getTemperature: function (onSuccess, onError) {
     exec(onSuccess, onError, 'DatecsPrinter', 'getTemperature', []);
   },
-  printBarcode: function (onSuccess, onError) {
-    exec(onSuccess, onError, 'DatecsPrinter', 'printBarcode', []);
+  setBarcode: function (align, small, scale, hri, height, onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'setBarcode', [align, small, scale, hri, height]);
+  }
+  printBarcode: function (type, data, onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'printBarcode', [type, data]);
   }
 };
 module.exports = printer;

@@ -63,6 +63,14 @@ public class DatecsPrinter extends CordovaPlugin {
 			case getTemperature:
 				printer.getTemperature();
 				break;
+			case setBarcode:
+				int align = args.getInt(0);
+				boolean small = args.getBoolean(1);
+				int scale = args.getInt(2);
+				int hri = args.getInt(3);
+				int height = args.getInt(4);
+				printer.setBarcode(align, small, scale, hri, height);
+				break;
 			case printBarcode:
 				int type = args.getInt(0);
 				String data = args.getString(1);

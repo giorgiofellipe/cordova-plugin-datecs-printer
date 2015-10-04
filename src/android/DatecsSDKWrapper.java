@@ -100,6 +100,7 @@ public class DatecsSDKWrapper {
         put(7, "Erro ao buscar temperatura");
         put(8, "Erro ao imprimir código de barras");
         put(9, "Erro ao imprimir página de teste");
+        put(10, "Erro ao setar configurações do código de barras");
     }};
 
     private JSONObject getErrorByCode(int code) {
@@ -397,6 +398,15 @@ public class DatecsSDKWrapper {
             mCallbackContext.success(temperature);
         } catch (Exception e) {
             mCallbackContext.error(this.getErrorByCode(7, e));
+        }
+    }
+
+    public void setBarcode(int align, boolean small, int scale, int hri, int height) {
+        try {
+            mPrinter.setBarcode(align, small, scale, hri, height);
+            mCallbackContext.success();
+        } catch (Exception e) {
+            mCallbackContext.error(this.getErrorByCode(10, e));
         }
     }
 
