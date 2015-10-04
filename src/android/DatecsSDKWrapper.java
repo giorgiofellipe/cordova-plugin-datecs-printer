@@ -104,7 +104,7 @@ public class DatecsSDKWrapper {
     }};
 
     private JSONObject getErrorByCode(int code) {
-        this.getErrorByCode(code, null);
+        return this.getErrorByCode(code, null);
     }
 
     private JSONObject getErrorByCode(int code, Exception exception) {
