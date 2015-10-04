@@ -27,7 +27,18 @@ var printer = {
   },
   printText: function(text, charset, onSuccess, onError) {
     exec(onSuccess, onError, 'DatecsPrinter', 'printText', [text, charset]);
+  },
+  printSelfTest: function (onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'printSelfTest', []);
+  },
+  getStatus: function (onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'getStatus', []);
+  },
+  getTemperature: function (onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'getTemperature', []);
+  },
+  printBarcode: function (onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'printBarcode', []);
   }
 };
-
 module.exports = printer;

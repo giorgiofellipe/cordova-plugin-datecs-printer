@@ -10,6 +10,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.Exception;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.HashMap;
@@ -66,7 +67,8 @@ public class DatecsSDKWrapper {
         }
 
         @Override
-        public void onPaperReady(boolean state) {            if (state) {
+        public void onPaperReady(boolean state) {
+            if (state) {
                 showToast("Papel ok");
             } else {
                 showToast("Sem papel");
@@ -91,13 +93,27 @@ public class DatecsSDKWrapper {
     private Map<Integer, String> errorCode = new HashMap<Integer, String>(){{
         put(1, "Adaptador Bluetooth não disponível");
         put(2, "Nenhum dispositivo Bluetooth encontrado");
+        put(3, "A quantidade de linhas deve estar entre 0 e 255");
+        put(4, "Erro ao alimentar papel à impressora");
+        put(5, "Erro ao imprimir");
+        put(6, "Erro ao buscar status");
+        put(7, "Erro ao buscar temperatura");
+        put(8, "Erro ao imprimir código de barras");
+        put(9, "Erro ao imprimir página de teste");
     }};
 
     private JSONObject getErrorByCode(int code) {
+        this.getErrorByCode(code, null);
+    }
+
+    private JSONObject getErrorByCode(int code, Exception e) {
         JSONObject json = new JSONObject();
         try {
             json.put("errorCode", code);
             json.put("message", errorCode.get(code));
+            if (e != null) {
+                json.put("exception", e.getMessage());
+            }
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage());
             showToast(e.getMessage());
@@ -324,14 +340,14 @@ public class DatecsSDKWrapper {
      */
     public void feedPaper(int linesQuantity) {
         if (linesQuantity < 0 || linesQuantity > 255) {
-            mCallbackContext.error("A quantidade de linhas deve estar entre 0 e 255");
+            mCallbackContext.error(this.getErrorByCode(3));
         }
         try {
             mPrinter.feedPaper(linesQuantity);
             mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
-            mCallbackContext.error("Erro ao alimentar papel à impressora: " + e.getMessage());
+            mCallbackContext.error(this.getErrorByCode(4, e));
         }
     }
 
@@ -356,7 +372,7 @@ public class DatecsSDKWrapper {
             mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
-            mCallbackContext.error("Erro ao imprimir: " + e.getMessage());
+            mCallbackContext.error(this.getErrorByCode(5, e));
         }
     }
 
@@ -368,7 +384,7 @@ public class DatecsSDKWrapper {
             int status = mPrinter.getStatus();
             mCallbackContext.success(status);
         } catch (Exception e) {
-            mCallbackContext.error("Erro ao buscar status: " + e.getMessage());
+            mCallbackContext.error(this.getErrorByCode(6, e));
         }
     }
 
@@ -380,7 +396,7 @@ public class DatecsSDKWrapper {
             int temperature = mPrinter.getTemperature();
             mCallbackContext.success(temperature);
         } catch (Exception e) {
-            mCallbackContext.error("Erro ao buscar temperatura: " + e.getMessage());
+            mCallbackContext.error(this.getErrorByCode(7, e));
         }
     }
 
@@ -396,7 +412,7 @@ public class DatecsSDKWrapper {
             mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
-            mCallbackContext.error("Erro ao imprimir código de barras: " + e.getMessage());
+            mCallbackContext.error(this.getErrorByCode(8, e));
         }
     }
 
@@ -409,7 +425,7 @@ public class DatecsSDKWrapper {
             mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
-            mCallbackContext.error("Erro ao imprimir página de teste: " + e.getMessage());
+            mCallbackContext.error(this.getErrorByCode(9, e));
         }
     }
 
