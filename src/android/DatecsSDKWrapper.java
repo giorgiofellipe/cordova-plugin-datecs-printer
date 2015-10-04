@@ -107,13 +107,13 @@ public class DatecsSDKWrapper {
         this.getErrorByCode(code, null);
     }
 
-    private JSONObject getErrorByCode(int code, Exception e) {
+    private JSONObject getErrorByCode(int code, Exception exception) {
         JSONObject json = new JSONObject();
         try {
             json.put("errorCode", code);
             json.put("message", errorCode.get(code));
-            if (e != null) {
-                json.put("exception", e.getMessage());
+            if (exception != null) {
+                json.put("exception", exception.getMessage());
             }
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage());
