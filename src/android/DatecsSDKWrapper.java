@@ -3,6 +3,8 @@ package com.giorgiofellipe.datecsprinter;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.PluginResult;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,9 +28,11 @@ import android.widget.Toast;
 import android.util.Log;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Bundle;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.datecs.api.BuildInfo;
 import com.datecs.api.printer.PrinterInformation;
@@ -46,6 +50,7 @@ public class DatecsSDKWrapper {
     private CallbackContext mCallbackContext;
     private ProgressDialog mDialog;
     private CordovaInterface mCordova;
+    private CordovaWebView mWebView;
 
     /**
      * Interface de eventos da Impressora
@@ -170,6 +175,10 @@ public class DatecsSDKWrapper {
         mAddress = address;
     }
 
+    protected void setWebView(CordovaWebView webView) {
+        mWebView = webView;
+    }
+
     public void setCordova(CordovaInterface cordova) {
         mCordova = cordova;
     }
@@ -258,15 +267,18 @@ public class DatecsSDKWrapper {
                     out = mBluetoothSocket.getOutputStream();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    sendStatusUpdate(false);
                     showError("Falha ao conectar: " + e.getMessage(), false);
                     return;
                 }
 
                 try {
                     initializePrinter(in, out, callbackContext);
+                    sendStatusUpdate(true);
                     showToast("Impressora Conectada!");
                 } catch (IOException e) {
                     e.printStackTrace();
+                    sendStatusUpdate(false);
                     showError("Falha ao inicializar: " + e.getMessage(), false);
                     return;
                 }
@@ -289,6 +301,7 @@ public class DatecsSDKWrapper {
             return (BluetoothSocket) method.invoke(device, uuid);
         } catch (Exception e) {
             e.printStackTrace();
+            sendStatusUpdate(false);
             showError("Falha ao criar comunicação: " + e.getMessage(), false);
         }
         return device.createRfcommSocketToServiceRecord(uuid);
@@ -321,6 +334,7 @@ public class DatecsSDKWrapper {
                             channel.pullEvent();
                         } catch (IOException e) {
                             e.printStackTrace();
+                            sendStatusUpdate(false);
                             showError(e.getMessage(), mRestart);
                             break;
                         }
@@ -481,12 +495,13 @@ public class DatecsSDKWrapper {
      * @param resetConnection
      */
     private void showError(final String text, boolean resetConnection) {
-        mCordova.getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(mCordova.getActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-            }
-        });
+        //we'l ignore toasts at the moment
+//        mCordova.getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Toast.makeText(mCordova.getActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+//            }
+//        });
         if (resetConnection) {
             connect(mConnectCallbackContext);
         }
@@ -498,13 +513,30 @@ public class DatecsSDKWrapper {
      * @param text
      */
     private void showToast(final String text) {
-        mCordova.getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (!mCordova.getActivity().isFinishing()) {
-                    Toast.makeText(mCordova.getActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        //we'l ignore toasts at the moment
+//        mCordova.getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (!mCordova.getActivity().isFinishing()) {
+//                    Toast.makeText(mCordova.getActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+    }
+
+    /**
+     * Create a new plugin result and send it back to JavaScript
+     *
+     * @param connection status
+     */
+    private void sendStatusUpdate(boolean isConnected) {
+        final Intent intent = new Intent("DatecsPrinter.connectionStatus");
+
+        Bundle b = new Bundle();
+        b.putString( "userdata", "{ isConnected: "+ isConnected +"}" );
+
+        intent.putExtras( b);
+
+        LocalBroadcastManager.getInstance(mWebView.getContext()).sendBroadcastSync(intent);
     }
 }

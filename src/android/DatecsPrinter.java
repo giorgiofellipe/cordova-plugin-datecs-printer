@@ -2,6 +2,8 @@ package com.giorgiofellipe.datecsprinter;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaWebView;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +23,11 @@ public class DatecsPrinter extends CordovaPlugin {
 				printImage,
 				printLogo,
 				printSelfTest;
+	}
+
+	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+		super.initialize(cordova, webView);
+		printer.setWebView(webView);
 	}
 
 	@Override

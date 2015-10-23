@@ -13,3 +13,16 @@
 - `{left}`	    Aligns text to the left paper edge.
 - `{center}`	Aligns text to the center of paper.
 - `{right}`	    Aligns text to the right paper edge.
+
+
+## ConnectionStatus Event
+
+You should use this plugin to receive the broadcasts `cordova plugin add cordova-plugin-broadcaster`
+
+```javascript
+window.broadcaster.addEventListener( "DatecsPrinter.connectionStatus", function(e) {
+  if (e.isConnected) {
+    //do something
+  }
+});
+```
