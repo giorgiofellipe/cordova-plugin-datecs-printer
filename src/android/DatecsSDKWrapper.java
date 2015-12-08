@@ -106,6 +106,7 @@ public class DatecsSDKWrapper {
         put(8, "Erro ao imprimir código de barras");
         put(9, "Erro ao imprimir página de teste");
         put(10, "Erro ao setar configurações do código de barras");
+        put(11, "Erro ao imprimir imagem");
     }};
 
     private JSONObject getErrorByCode(int code) {
@@ -450,6 +451,25 @@ public class DatecsSDKWrapper {
             mCallbackContext.success();
         } catch (Exception e) {
             mCallbackContext.error(this.getErrorByCode(9, e));
+        }
+    }
+
+
+    /**
+     * Print an image
+     *
+     * @param image
+     * @param width
+     * @param height
+     * @param align
+     */
+    public void printImage(int[] image, int width, int height, int align) {
+        try {
+            mPrinter.printImage(image, width, height, align, false);
+            mPrinter.flush();
+            mCallbackContext.success();
+        } catch (Exception e) {
+            mCallbackContext.error(this.getErrorByCode(11, e));
         }
     }
 

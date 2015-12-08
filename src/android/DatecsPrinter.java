@@ -85,6 +85,16 @@ public class DatecsPrinter extends CordovaPlugin {
 				printer.printBarcode(type, data);
 				break;
 			case printImage:
+				JSONArray image = args.getJSONArray(0);
+				int imgWidth = args.getInt(1);
+				int imgHeight = args.getInt(2);
+				int imgAlign = args.getInt(3);
+
+				int[] imageData = new int[imgWidth * imgHeight];
+				for (int i=0; i<image.length(); i++) {
+					imageData[i] = image.getInt(i);
+				}
+				printer.printImage(imageData, imgWidth, imgHeight, imgAlign);
 				break;
 			case printLogo:
 				break;

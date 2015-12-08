@@ -42,6 +42,9 @@ var printer = {
   },
   printBarcode: function (type, data, onSuccess, onError) {
     exec(onSuccess, onError, 'DatecsPrinter', 'printBarcode', [type, data]);
+  },
+  printImage: function (image, width, height, align, onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'printImage', [image, width, height, align]);
   }
 };
 module.exports = printer;
