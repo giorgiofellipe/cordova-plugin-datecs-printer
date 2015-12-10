@@ -33,6 +33,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Base64;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.datecs.api.BuildInfo;
 import com.datecs.api.printer.PrinterInformation;
@@ -458,14 +461,25 @@ public class DatecsSDKWrapper {
     /**
      * Print an image
      *
-     * @param image
+     * @param image String (BASE64 encoded image)
      * @param width
      * @param height
      * @param align
      */
-    public void printImage(int[] image, int width, int height, int align) {
+    public void printImage(String image, int width, int height, int align) {
         try {
-            mPrinter.printImage(image, width, height, align, false);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inScaled = false;
+            byte[] decodedByte = Base64.decode(image, 0);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+            final int imgWidth = bitmap.getWidth();
+            final int imgHeight = bitmap.getHeight();
+            final int[] argb = new int[imgWidth * imgHeight];
+
+            bitmap.getPixels(argb, 0, imgWidth, 0, 0, imgWidth, imgHeight);
+            bitmap.recycle();
+
+            mPrinter.printImage(argb, width, height, align, true);
             mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
