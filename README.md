@@ -1,5 +1,30 @@
 # cordova-plugin-datecs-printer
 
+The first thing that you must know is that the plugin is available through this variable `window.DatecsPrinter`.
+
+So, there's a lot of functions that you can call to execute each operation and perform the printer actions, these are the most important ones (you can see all on [printer.js](www/printer.js) file):
+
+_(every function accept at least two parameters, and they're the last ones: onSuccess function and onError function)_
+
+- listBluetoothDevices(): will give you a list of all the already previously paired bluetooth devices
+- connect(address): this will establish the bluetooth connection with the selected printer (you need pass the address `attribute` of the selected device)
+- feedPaper(lines): this will "print" blank lines
+- printText(text): will print the text respecting tags definition
+
+
+```javascript
+window.DatecsPrinter.listBluetoothDevices(
+  function (devices) {
+    window.DatecsPrinter.connect(devices[0].address, printSomeTestText);
+  },
+  function (error) {
+  }
+);
+
+function printSomeTestText() {
+  window.DatecsPrinter.printText("Print Test!");
+}
+```
 
 ### Tags definition
 - `{reset}`	    Reset to default settings.
@@ -17,6 +42,7 @@
 
 ## ConnectionStatus Event
 
+To listen about the connection status this is the way you should go:
 You should use this plugin to receive the broadcasts `cordova plugin add cordova-plugin-broadcaster`
 
 ```javascript
