@@ -52,3 +52,8 @@ window.broadcaster.addEventListener( "DatecsPrinter.connectionStatus", function(
   }
 });
 ```
+
+## Angular / Ionic
+
+If your intention is to use it with Angular or Ionic, you may take a look at this simple example: https://github.com/giorgiofellipe/cordova-plugin-datecsprinter-example.
+There's a ready to use angular service implementation.
