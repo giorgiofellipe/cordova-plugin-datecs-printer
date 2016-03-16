@@ -79,6 +79,7 @@ public class DatecsSDKWrapper {
             if (state) {
                 showToast("Papel ok");
             } else {
+                closeActiveConnections();
                 showToast("Sem papel");
             }
         }
