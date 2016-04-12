@@ -39,6 +39,19 @@ function printSomeTestText() {
 - `{center}`	Aligns text to the center of paper.
 - `{right}`	    Aligns text to the right paper edge.
 
+### Barcode Types Code
+- UPC-A =	65
+- UPC-E =	66
+- EAN13 (JAN13) =	67
+- EAN 8 (JAN8) = 68
+- CODE 39 =	69
+- ITF = 70
+- CODABAR (NW-7) = 71
+- CODE 93 = 72
+- CODE 128 = 73
+- PDF417 = 74
+- CODE 128 Auto = 75
+- EAN 128 = 76
 
 ## ConnectionStatus Event
 
