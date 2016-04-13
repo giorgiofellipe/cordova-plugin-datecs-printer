@@ -39,6 +39,11 @@ function printSomeTestText() {
 - `{center}`	Aligns text to the center of paper.
 - `{right}`	    Aligns text to the right paper edge.
 
+### Alignment Codes
+- CENTER = 1
+- LEFT = 0
+- RIGHT = 2
+
 ### Barcode Types Code
 - UPC-A =	65
 - UPC-E =	66
