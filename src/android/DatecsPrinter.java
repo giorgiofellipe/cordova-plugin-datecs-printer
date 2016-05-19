@@ -27,7 +27,8 @@ public class DatecsPrinter extends CordovaPlugin {
 				selectPageMode,
 				selectStandardMode,
 				drawPageRectangle,
-				drawPageFrame;
+				drawPageFrame,
+				printPage;
 	}
 
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
