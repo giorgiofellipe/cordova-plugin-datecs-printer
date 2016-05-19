@@ -6,23 +6,79 @@ So, there's a lot of functions that you can call to execute each operation and p
 
 _(every function accept at least two parameters, and they're the last ones: onSuccess function and onError function)_
 
-- listBluetoothDevices(): will give you a list of all the already previously paired bluetooth devices
-- connect(address): this will establish the bluetooth connection with the selected printer (you need pass the address `attribute` of the selected device)
-- feedPaper(lines): this will "print" blank lines
-- printText(text): will print the text respecting tags definition
+- **listBluetoothDevices():** will give you a list of all the already previously paired bluetooth devices
+- **connect(address):** this will establish the bluetooth connection with the selected printer (you need pass the address `attribute` of the selected device)
+- **feedPaper(lines):** this will "print" blank lines
+- **printText(text, charset):** will print the text respecting tags definition (charset encoding is ISO-8859-1 by default)
+- **printImage(base64, width, height, alignment):** will print the image, the expected parameters are: 
+  - 1- Base64 image
+  - 2- Printing box's width (it does not resize the image)
+  - 3- Printing box's height (it does not resize the image)
+  - 4- Alignment code (you can find the codes [here](#alignment-codes))
+- **printBarcode(barcodeType, barcodeData):** this will print a barcode accordingly to the given type and data (you can find the barcode types code [here](#barcode-types-code))
 
-
+### Example
 ```javascript
 window.DatecsPrinter.listBluetoothDevices(
   function (devices) {
-    window.DatecsPrinter.connect(devices[0].address, printSomeTestText);
+    window.DatecsPrinter.connect(devices[0].address, 
+      function() {
+        printSomeTestText();
+      },
+      function() {
+        alert(JSON.stringify(error));
+      }
+    );
   },
   function (error) {
+    alert(JSON.stringify(error));
   }
 );
 
 function printSomeTestText() {
-  window.DatecsPrinter.printText("Print Test!");
+  window.DatecsPrinter.printText("Print Test!", 'ISO-8859-1', 
+    function() {
+      printMyImage();
+    }
+  );
+}
+
+function printMyImage() {
+  var image = new Image();
+  image.src = 'img/some_image.jpg';
+  image.onload = function() {
+      var canvas = document.createElement('canvas');
+      canvas.height = 100;
+      canvas.width = 100;
+      var context = canvas.getContext('2d');
+      context.drawImage(image, 0, 0);
+      var imageData = canvas.toDataURL('image/jpeg').replace(/^data:image\/(png|jpg|jpeg);base64,/, ""); //remove mimetype
+      window.DatecsPrinter.printImage(
+          imageData, //base64
+          canvas.width, 
+          canvas.height, 
+          1, 
+          function() {
+            printMyBarcode();
+          },
+          function(error) {
+              alert(JSON.stringify(error));
+          }
+      )
+  };
+}
+
+function printMyBarcode() {
+  window.DatecsPrinter.printBarcode(
+    75, //here goes the barcode type code
+    '13132498746313210584982011487', //your barcode data
+    function() {
+      alert('success!');
+    },
+    function() {
+      alert(JSON.stringify(error));
+    }
+  );
 }
 ```
 
@@ -39,6 +95,24 @@ function printSomeTestText() {
 - `{center}`	Aligns text to the center of paper.
 - `{right}`	    Aligns text to the right paper edge.
 
+### Alignment Codes
+- CENTER = 1
+- LEFT = 0
+- RIGHT = 2
+
+### Barcode Types Code
+- UPC-A =	65
+- UPC-E =	66
+- EAN13 (JAN13) =	67
+- EAN 8 (JAN8) = 68
+- CODE 39 =	69
+- ITF = 70
+- CODABAR (NW-7) = 71
+- CODE 93 = 72
+- CODE 128 = 73
+- PDF417 = 74
+- CODE 128 Auto = 75
+- EAN 128 = 76
 
 ## ConnectionStatus Event
 
