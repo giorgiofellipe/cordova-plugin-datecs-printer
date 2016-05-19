@@ -22,7 +22,12 @@ public class DatecsPrinter extends CordovaPlugin {
 				printBarcode,
 				printImage,
 				printLogo,
-				printSelfTest;
+				printSelfTest,
+				setPageRegion,
+				selectPageMode,
+				selectStandardMode,
+				drawPageRectangle,
+				drawPageFrame;
 	}
 
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -96,6 +101,40 @@ public class DatecsPrinter extends CordovaPlugin {
 			case printSelfTest:
 				printer.printSelfTest();
 				break;
+			case drawPageRectangle:
+			  int x = args.getInt(0);
+			  int y = args.getInt(1);
+			  int width = args.getInt(2);
+			  height = args.getInt(3);
+			  int fillMode = args.getInt(4);
+			  printer.drawPageRectangle(x, y, width, height, fillMode);
+			  break;
+			case selectPageMode:
+			  printer.selectPageMode();
+			  break;
+			case selectStandardMode:
+			  printer.selectStandardMode();
+			  break;
+			case setPageRegion:
+			  x = args.getInt(0);
+			  y = args.getInt(1);
+			  width = args.getInt(2);
+			  height = args.getInt(3);
+			  int direction = args.getInt(4);
+			  printer.setPageRegion(x, y, width, height, direction);
+			  break;
+			case drawPageFrame:
+			  x = args.getInt(0);
+			  y = args.getInt(1);
+			  width = args.getInt(2);
+			  height = args.getInt(3);
+			  fillMode = args.getInt(4);
+			  int thickness = args.getInt(5);
+			  printer.drawPageFrame(x, y, width, height, fillMode, thickness);
+			  break;
+			case printPage:
+			  printer.printPage();
+			  break
 		}
 		return true;
 	}

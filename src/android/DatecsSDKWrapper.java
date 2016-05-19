@@ -111,6 +111,12 @@ public class DatecsSDKWrapper {
         put(9, "Erro ao imprimir página de teste");
         put(10, "Erro ao setar configurações do código de barras");
         put(11, "Erro ao imprimir imagem");
+        put(12, "Erro ao imprimir retângulo");
+        put(13, "Erro ao imprimir retângulo");
+        put(14, "Erro ao imprimir retângulo");
+        put(15, "Erro ao imprimir retângulo");
+        put(16, "Erro ao imprimir retângulo");
+        put(17, "Erro ao imprimir retângulo");
     }};
 
     private JSONObject getErrorByCode(int code) {
@@ -455,6 +461,60 @@ public class DatecsSDKWrapper {
             mCallbackContext.success();
         } catch (Exception e) {
             mCallbackContext.error(this.getErrorByCode(9, e));
+        }
+    }
+
+    public void drawPageRectangle(int x, int y, int width, int height, int fillMode) {
+        try {
+            mPrinter.drawPageRectangle(x, y, width, height, fillMode);
+            mCallbackContext.success();
+        } catch (Exception e) {
+            mCallbackContext.error(this.getErrorByCode(12, e));
+        }
+    }
+
+    public void drawPageFrame(int x, int y, int width, int height, int fillMode, int thickness) {
+        try {
+            mPrinter.drawPageFrame(x, y, width, height, fillMode, thickness);
+            mCallbackContext.success();
+        } catch (Exception e) {
+            mCallbackContext.error(this.getErrorByCode(16, e));
+        }
+    }
+
+    public void selectStandardMode() {
+        try {
+            mPrinter.selectStandardMode();
+            mCallbackContext.success();
+        } catch (Exception e) {
+            mCallbackContext.error(this.getErrorByCode(13, e));
+        }
+    }
+
+    public void selectPageMode() {
+        try {
+            mPrinter.selectPageMode();
+            mCallbackContext.success();
+        } catch (Exception e) {
+            mCallbackContext.error(this.getErrorByCode(14, e));
+        }
+    }
+
+    public void printPage() {
+        try {
+            mPrinter.printPage();
+            mCallbackContext.success();
+        } catch (Exception e) {
+            mCallbackContext.error(this.getErrorByCode(17, e));
+        }
+    }
+
+    public void setPageRegion(int x, int y, int width, int height, int direction) {
+        try {
+            mPrinter.setPageRegion(x, y, width, height, direction);
+            mCallbackContext.success();
+        } catch (Exception e) {
+            mCallbackContext.error(this.getErrorByCode(15, e));
         }
     }
 
