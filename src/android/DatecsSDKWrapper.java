@@ -503,7 +503,7 @@ public class DatecsSDKWrapper {
     public void printPage() {
         try {
             mPrinter.printPage();
-            mPrinter.flush();8
+            mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
             mCallbackContext.error(this.getErrorByCode(17, e));
