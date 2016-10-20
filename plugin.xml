@@ -31,5 +31,33 @@
         <source-file src="src/android/DatecsPrinter.java" target-dir="src/com/giorgiofellipe/datecsprinter" />
         <source-file src="src/android/DatecsSDKWrapper.java" target-dir="src/com/giorgiofellipe/datecsprinter" />
 
+        <source-file src="src/android/res/values-pt/strings.xml" target-dir="res/values-pt"/>
+
+        <config-file target="res/values/strings.xml" parent="/resources">
+            <string name="connecting">Connecting..</string>
+            <string name="err_disconnect_printer">Error disconnecting printer: </string>
+            <string name="err_fetch_st">Error fetching status</string>
+            <string name="err_fetch_tmp">Error fetching temperature</string>
+            <string name="err_lines_number">The number of lines must be between 0 and 255</string>
+            <string name="err_no_bt_adapter">Bluetooth adapter not available</string>
+            <string name="err_no_bt_device">No Bluetooth device found</string>
+            <string name="err_feed_paper">Error feeding paper to the printer</string>
+            <string name="err_print">Error printing</string>
+            <string name="err_print_barcode">Error printing barcode</string>
+            <string name="err_print_img">Error printing image</string>
+            <string name="err_print_rect">Error printing rectangle</string>
+            <string name="err_print_test">Error printing test page</string>
+            <string name="err_set_barcode">Error setting barcode settings</string>
+            <string name="failed_to_connect">Failed to connect: </string>
+            <string name="failed_to_create_communication">Failed to create communication: </string>
+            <string name="failed_to_initialize">Failed to initialize: </string>
+            <string name="low_battery">Low battery</string>
+            <string name="no_paper">No paper</string>
+            <string name="overheating">Overheating</string>
+            <string name="paper_ok">Paper ok</string>
+            <string name="printer">Printer</string>
+            <string name="printer_connected">Printer connected!</string>
+            <string name="printer_disconnected">Printer disconnected</string>
+        </config-file>
     </platform>
 </plugin>
