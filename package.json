@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-datecs-printer",
-  "version": "0.3.7",
+  "version": "0.4.0",
   "description": "Cordova Datecs Printer Plugin",
   "cordova": {
     "id": "cordova-plugin-datecs-printer",
@@ -29,4 +29,3 @@
   "author": "Apache Software Foundation",
   "license": "Apache 2.0"
 }
-
