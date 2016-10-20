@@ -77,46 +77,46 @@ public class DatecsSDKWrapper {
         @Override
         public void onPaperReady(boolean state) {
             if (state) {
-                showToast("Paper ok");
+                showToast(getString(R.string.paper_ok));
             } else {
                 closeActiveConnections();
-                showToast("No paper");
+                showToast(getString(R.string.no_paper));
             }
         }
 
         @Override
         public void onOverHeated(boolean state) {
             if (state) {
-                showToast("Overheating");
+                showToast(getString(R.string.overheating));
             }
         }
 
         @Override
         public void onLowBattery(boolean state) {
             if (state) {
-                showToast("Low battery");
+                showToast(getString(R.string.low_battery));
             }
         }
     };
 
     private Map<Integer, String> errorCode = new HashMap<Integer, String>(){{
-        put(1, "Bluetooth adapter not available");
-        put(2, "No Bluetooth device found");
-        put(3, "The number of lines must be between 0 and 255");
-        put(4, "Error feeding paper to the printer");
-        put(5, "Error printing");
-        put(6, "Error fetching status");
-        put(7, "Error fetching temperature");
-        put(8, "Error printing barcode");
-        put(9, "Error printing test page");
-        put(10, "Error setting barcode settings");
-        put(11, "Error printing image");
-        put(12, "Error printing rectangle");
-        put(13, "Error printing rectangle");
-        put(14, "Error printing rectangle");
-        put(15, "Error printing rectangle");
-        put(16, "Error printing rectangle");
-        put(17, "Error printing rectangle");
+        put(1, getString(R.string.err_no_bt_adapter));
+        put(2, getString(R.string.err_no_bt_device));
+        put(3, getString(R.string.err_lines_number));
+        put(4, getString(R.string.err_feed_paper));
+        put(5, getString(R.string.err_print));
+        put(6, getString(R.string.err_fetch_st));
+        put(7, getString(R.string.err_fetch_tmp));
+        put(8, getString(R.string.err_print_barcode));
+        put(9, getString(R.string.err_print_tp));
+        put(10, getString(R.string.err_set_barcode));
+        put(11, getString(R.string.err_print_img));
+        put(12, getString(R.string.err_print_rect));
+        put(13, getString(R.string.err_print_rect));
+        put(14, getString(R.string.err_print_rect));
+        put(15, getString(R.string.err_print_rect));
+        put(16, getString(R.string.err_print_rect));
+        put(17, getString(R.string.err_print_rect));
     }};
 
     private JSONObject getErrorByCode(int code) {
@@ -279,22 +279,22 @@ public class DatecsSDKWrapper {
                 } catch (Exception e) {
                     e.printStackTrace();
                     sendStatusUpdate(false);
-                    showError("Failed to connect: " + e.getMessage(), false);
+                    showError(getString(R.string.failed_to_connect) + e.getMessage(), false);
                     return;
                 }
 
                 try {
                     initializePrinter(in, out, callbackContext);
                     sendStatusUpdate(true);
-                    showToast("Printer connected!");
+                    showToast(getString(R.string.printer_connected));
                 } catch (IOException e) {
                     e.printStackTrace();
                     sendStatusUpdate(false);
-                    showError("Failed to initialize: " + e.getMessage(), false);
+                    showError(getString(R.string.failed_to_initialize) + e.getMessage(), false);
                     return;
                 }
             }
-        }, "Printer", "Connecting..");
+        }, getString(R.string.printer), getString(R.string.connecting));
     }
 
     /**
@@ -313,7 +313,7 @@ public class DatecsSDKWrapper {
         } catch (Exception e) {
             e.printStackTrace();
             sendStatusUpdate(false);
-            showError("Failed to create communication: " + e.getMessage(), false);
+            showError(getString(R.string.failed_to_create_communication) + e.getMessage(), false);
         }
         return device.createRfcommSocketToServiceRecord(uuid);
     }

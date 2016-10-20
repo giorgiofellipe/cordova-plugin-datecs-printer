@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <string name="connecting">Conectando..</string>
+  <string name="err_disconnect_printer">Erro ao desconectar impressora: </string>
+  <string name="err_fetch_st">Erro ao buscar status</string>
+  <string name="err_fetch_tmp">Erro ao buscar temperatura</string>
+  <string name="err_lines_number">A quantidade de linhas deve estar entre 0 e 255</string>
+  <string name="err_no_bt_adapter">Adaptador Bluetooth não disponível</string>
+  <string name="err_no_bt_device">Nenhum dispositivo Bluetooth encontrado</string>
+  <string name="err_feed_paper">Erro ao alimentar papel à impressora</string>
+  <string name="err_print">Erro ao imprimir</string>
+  <string name="err_print_barcode">Erro ao imprimir código de barras</string>
+  <string name="err_print_img">Erro ao imprimir imagem</string>
+  <string name="err_print_rect">Erro ao imprimir retângulo</string>
+  <string name="err_print_test">Erro ao imprimir página de teste</string>
+  <string name="err_set_barcode">Erro ao setar configurações do código de barras</string>
+  <string name="failed_to_connect">Falha ao conectar: </string>
+  <string name="failed_to_create_communication">Falha ao criar comunicação: </string>
+  <string name="failed_to_initialize">Falha ao inicializar: </string>
+  <string name="low_battery">Pouca bateria</string>
+  <string name="no_paper">Sem papel</string>
+  <string name="overheating">Superaquecimento</string>
+  <string name="paper_ok">Papel ok</string>
+  <string name="printer">Impressora</string>
+  <string name="printer_connected">Impressora Conectada!</string>
+  <string name="printer_disconnected">Impressora desconectada</string>
+</resources>
