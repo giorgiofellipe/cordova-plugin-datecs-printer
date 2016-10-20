@@ -77,46 +77,46 @@ public class DatecsSDKWrapper {
         @Override
         public void onPaperReady(boolean state) {
             if (state) {
-                showToast("Papel ok");
+                showToast("Paper ok");
             } else {
                 closeActiveConnections();
-                showToast("Sem papel");
+                showToast("No paper");
             }
         }
 
         @Override
         public void onOverHeated(boolean state) {
             if (state) {
-                showToast("Superaquecimento");
+                showToast("Overheating");
             }
         }
 
         @Override
         public void onLowBattery(boolean state) {
             if (state) {
-                showToast("Pouca bateria");
+                showToast("Low battery");
             }
         }
     };
 
     private Map<Integer, String> errorCode = new HashMap<Integer, String>(){{
-        put(1, "Adaptador Bluetooth não disponível");
-        put(2, "Nenhum dispositivo Bluetooth encontrado");
-        put(3, "A quantidade de linhas deve estar entre 0 e 255");
-        put(4, "Erro ao alimentar papel à impressora");
-        put(5, "Erro ao imprimir");
-        put(6, "Erro ao buscar status");
-        put(7, "Erro ao buscar temperatura");
-        put(8, "Erro ao imprimir código de barras");
-        put(9, "Erro ao imprimir página de teste");
-        put(10, "Erro ao setar configurações do código de barras");
-        put(11, "Erro ao imprimir imagem");
-        put(12, "Erro ao imprimir retângulo");
-        put(13, "Erro ao imprimir retângulo");
-        put(14, "Erro ao imprimir retângulo");
-        put(15, "Erro ao imprimir retângulo");
-        put(16, "Erro ao imprimir retângulo");
-        put(17, "Erro ao imprimir retângulo");
+        put(1, "Bluetooth adapter not available");
+        put(2, "No Bluetooth device found");
+        put(3, "The number of lines must be between 0 and 255");
+        put(4, "Error feeding paper to the printer");
+        put(5, "Error printing");
+        put(6, "Error fetching status");
+        put(7, "Error fetching temperature");
+        put(8, "Error printing barcode");
+        put(9, "Error printing test page");
+        put(10, "Error setting barcode settings");
+        put(11, "Error printing image");
+        put(12, "Error printing rectangle");
+        put(13, "Error printing rectangle");
+        put(14, "Error printing rectangle");
+        put(15, "Error printing rectangle");
+        put(16, "Error printing rectangle");
+        put(17, "Error printing rectangle");
     }};
 
     private JSONObject getErrorByCode(int code) {
@@ -279,22 +279,22 @@ public class DatecsSDKWrapper {
                 } catch (Exception e) {
                     e.printStackTrace();
                     sendStatusUpdate(false);
-                    showError("Falha ao conectar: " + e.getMessage(), false);
+                    showError("Failed to connect: " + e.getMessage(), false);
                     return;
                 }
 
                 try {
                     initializePrinter(in, out, callbackContext);
                     sendStatusUpdate(true);
-                    showToast("Impressora Conectada!");
+                    showToast("Printer connected!");
                 } catch (IOException e) {
                     e.printStackTrace();
                     sendStatusUpdate(false);
-                    showError("Falha ao inicializar: " + e.getMessage(), false);
+                    showError("Failed to initialize: " + e.getMessage(), false);
                     return;
                 }
             }
-        }, "Impressora", "Conectando..");
+        }, "", "");
     }
 
     /**
