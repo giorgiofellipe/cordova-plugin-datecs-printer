@@ -117,6 +117,9 @@ public class DatecsSDKWrapper {
         put(15, getString(R.string.err_print_rect));
         put(16, getString(R.string.err_print_rect));
         put(17, getString(R.string.err_print_rect));
+        put(18, getString(R.string.failed_to_connect));
+        put(19, getString(R.string.err_bt_socket));
+        put(20, getString(R.string.failed_to_initialize));
     }};
 
     private JSONObject getErrorByCode(int code) {
@@ -279,7 +282,8 @@ public class DatecsSDKWrapper {
                 } catch (Exception e) {
                     e.printStackTrace();
                     sendStatusUpdate(false);
-                    showError(getString(R.string.failed_to_connect) + e.getMessage(), false);
+                    callbackContext.error(this.getErrorByCode(18));
+                    showError(getString(R.string.failed_to_connect) + ": " + e.getMessage(), false);
                     return;
                 }
 
@@ -290,7 +294,8 @@ public class DatecsSDKWrapper {
                 } catch (IOException e) {
                     e.printStackTrace();
                     sendStatusUpdate(false);
-                    showError(getString(R.string.failed_to_initialize) + e.getMessage(), false);
+                    callbackContext.error(this.getErrorByCode(20));
+                    showError(getString(R.string.failed_to_initialize) + ": " + e.getMessage(), false);
                     return;
                 }
             }
@@ -313,7 +318,8 @@ public class DatecsSDKWrapper {
         } catch (Exception e) {
             e.printStackTrace();
             sendStatusUpdate(false);
-            showError(getString(R.string.failed_to_create_communication) + e.getMessage(), false);
+            callbackContext.error(this.getErrorByCode(19));
+            showError(getString(R.string.failed_to_create_communication) + ": " + e.getMessage(), false);
         }
         return device.createRfcommSocketToServiceRecord(uuid);
     }

@@ -14,6 +14,7 @@
   <string name="err_print_rect">Error printing rectangle</string>
   <string name="err_print_test">Error printing test page</string>
   <string name="err_set_barcode">Error setting barcode settings</string>
+  <string name="err_bt_socket">Could not create Bluetooth socket</string>
   <string name="failed_to_connect">Failed to connect: </string>
   <string name="failed_to_create_communication">Failed to create communication: </string>
   <string name="failed_to_initialize">Failed to initialize: </string>
