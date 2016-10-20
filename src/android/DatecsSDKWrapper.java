@@ -294,7 +294,7 @@ public class DatecsSDKWrapper {
                     return;
                 }
             }
-        }, "", "");
+        }, "Printer", "Connecting..");
     }
 
     /**
@@ -313,7 +313,7 @@ public class DatecsSDKWrapper {
         } catch (Exception e) {
             e.printStackTrace();
             sendStatusUpdate(false);
-            showError("Falha ao criar comunicação: " + e.getMessage(), false);
+            showError("Failed to create communication: " + e.getMessage(), false);
         }
         return device.createRfcommSocketToServiceRecord(uuid);
     }
