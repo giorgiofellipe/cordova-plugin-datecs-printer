@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 public class DatecsPrinter extends CordovaPlugin {
-	private static final DatecsSDKWrapper printer = new DatecsSDKWrapper();
+	private static DatecsSDKWrapper printer;
 	private enum Option {
 		listBluetoothDevices,
 				connect,
@@ -33,12 +33,12 @@ public class DatecsPrinter extends CordovaPlugin {
 
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 		super.initialize(cordova, webView);
+		printer = new DatecsSDKWrapper(cordova);
 		printer.setWebView(webView);
 	}
 
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-		printer.setCordova(cordova);
 		printer.setCallbackContext(callbackContext);
 
 		Option option = null;
@@ -58,9 +58,9 @@ public class DatecsPrinter extends CordovaPlugin {
 			case disconnect:
 				try {
 					printer.closeActiveConnections();
-					callbackContext.success(getString(R.string.printer_disconnected));
+					callbackContext.success(DatecsUtil.getStringFromStringResource(this.cordova.getActivity().getApplication(), "printer_disconnected"));
 				} catch (Exception e) {
-					callbackContext.error(getString(R.string.err_disconnect_printer) + e.getMessage());
+					callbackContext.success(DatecsUtil.getStringFromStringResource(this.cordova.getActivity().getApplication(), "err_disconnect_printer"));
 				}
 				break;
 			case feedPaper:

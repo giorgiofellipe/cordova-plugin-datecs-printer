@@ -22,6 +22,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.lang.reflect.Method;
 
+import android.app.Application;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.widget.Toast;
@@ -52,8 +53,9 @@ public class DatecsSDKWrapper {
     private CallbackContext mConnectCallbackContext;
     private CallbackContext mCallbackContext;
     private ProgressDialog mDialog;
-    private CordovaInterface mCordova;
+    private final CordovaInterface mCordova;
     private CordovaWebView mWebView;
+    private final Application app;
 
     /**
      * Interface de eventos da Impressora
@@ -77,50 +79,55 @@ public class DatecsSDKWrapper {
         @Override
         public void onPaperReady(boolean state) {
             if (state) {
-                showToast(getString(R.string.paper_ok));
+                showToast(DatecsUtil.getStringFromStringResource(app, "paper_ok"));
             } else {
                 closeActiveConnections();
-                showToast(getString(R.string.no_paper));
+                showToast(DatecsUtil.getStringFromStringResource(app, "no_paper"));
             }
         }
 
         @Override
         public void onOverHeated(boolean state) {
             if (state) {
-                showToast(getString(R.string.overheating));
+              showToast(DatecsUtil.getStringFromStringResource(app, "overheating"));
             }
         }
 
         @Override
         public void onLowBattery(boolean state) {
             if (state) {
-                showToast(getString(R.string.low_battery));
+              showToast(DatecsUtil.getStringFromStringResource(app, "low_battery"));
             }
         }
     };
 
-    private Map<Integer, String> errorCode = new HashMap<Integer, String>(){{
-        put(1, getString(R.string.err_no_bt_adapter));
-        put(2, getString(R.string.err_no_bt_device));
-        put(3, getString(R.string.err_lines_number));
-        put(4, getString(R.string.err_feed_paper));
-        put(5, getString(R.string.err_print));
-        put(6, getString(R.string.err_fetch_st));
-        put(7, getString(R.string.err_fetch_tmp));
-        put(8, getString(R.string.err_print_barcode));
-        put(9, getString(R.string.err_print_tp));
-        put(10, getString(R.string.err_set_barcode));
-        put(11, getString(R.string.err_print_img));
-        put(12, getString(R.string.err_print_rect));
-        put(13, getString(R.string.err_print_rect));
-        put(14, getString(R.string.err_print_rect));
-        put(15, getString(R.string.err_print_rect));
-        put(16, getString(R.string.err_print_rect));
-        put(17, getString(R.string.err_print_rect));
-        put(18, getString(R.string.failed_to_connect));
-        put(19, getString(R.string.err_bt_socket));
-        put(20, getString(R.string.failed_to_initialize));
-    }};
+    private Map<Integer, String> errorCode = new HashMap<Integer, String>();
+
+    public DatecsSDKWrapper(CordovaInterface cordova) {
+        mCordova = cordova;
+        app = cordova.getActivity().getApplication();
+
+        this.errorCode.put(1, DatecsUtil.getStringFromStringResource(app, "err_no_bt_adapter"));
+        this.errorCode.put(2, DatecsUtil.getStringFromStringResource(app, "err_no_bt_device"));
+        this.errorCode.put(3, DatecsUtil.getStringFromStringResource(app, "err_lines_number"));
+        this.errorCode.put(4, DatecsUtil.getStringFromStringResource(app, "err_feed_paper"));
+        this.errorCode.put(5, DatecsUtil.getStringFromStringResource(app, "err_print"));
+        this.errorCode.put(6, DatecsUtil.getStringFromStringResource(app, "err_fetch_st"));
+        this.errorCode.put(7, DatecsUtil.getStringFromStringResource(app, "err_fetch_tmp"));
+        this.errorCode.put(8, DatecsUtil.getStringFromStringResource(app, "err_print_barcode"));
+        this.errorCode.put(9, DatecsUtil.getStringFromStringResource(app, "err_print_tp"));
+        this.errorCode.put(10, DatecsUtil.getStringFromStringResource(app, "err_set_barcode"));
+        this.errorCode.put(11, DatecsUtil.getStringFromStringResource(app, "err_print_img"));
+        this.errorCode.put(12, DatecsUtil.getStringFromStringResource(app, "err_print_rect"));
+        this.errorCode.put(13, DatecsUtil.getStringFromStringResource(app, "err_print_rect"));
+        this.errorCode.put(14, DatecsUtil.getStringFromStringResource(app, "err_print_rect"));
+        this.errorCode.put(15, DatecsUtil.getStringFromStringResource(app, "err_print_rect"));
+        this.errorCode.put(16, DatecsUtil.getStringFromStringResource(app, "err_print_rect"));
+        this.errorCode.put(17, DatecsUtil.getStringFromStringResource(app, "err_print_rect"));
+        this.errorCode.put(18, DatecsUtil.getStringFromStringResource(app, "failed_to_connect"));
+        this.errorCode.put(19, DatecsUtil.getStringFromStringResource(app, "err_bt_socket"));
+        this.errorCode.put(20, DatecsUtil.getStringFromStringResource(app, "failed_to_initialize"));
+    }
 
     private JSONObject getErrorByCode(int code) {
         return this.getErrorByCode(code, null);
@@ -193,9 +200,9 @@ public class DatecsSDKWrapper {
         mWebView = webView;
     }
 
-    public void setCordova(CordovaInterface cordova) {
-        mCordova = cordova;
-    }
+    // public void setCordova(CordovaInterface cordova) {
+    //     mCordova = cordova;
+    // }
 
     /**
      * CallbackContext de cada requisição, que efetivamente recebe os retornos dos métodos
@@ -263,6 +270,7 @@ public class DatecsSDKWrapper {
      * @param callbackContext
      */
     private void establishBluetoothConnection(final String address, final CallbackContext callbackContext) {
+        final DatecsSDKWrapper sdk = this;
         runJob(new Runnable() {
             @Override
             public void run() {
@@ -282,24 +290,25 @@ public class DatecsSDKWrapper {
                 } catch (Exception e) {
                     e.printStackTrace();
                     sendStatusUpdate(false);
-                    callbackContext.error(this.getErrorByCode(18));
-                    showError(getString(R.string.failed_to_connect) + ": " + e.getMessage(), false);
+                    callbackContext.error(sdk.getErrorByCode(18));
+                    showError(DatecsUtil.getStringFromStringResource(app, "failed_to_connect") + ": " + e.getMessage(), false);
                     return;
                 }
 
                 try {
                     initializePrinter(in, out, callbackContext);
                     sendStatusUpdate(true);
-                    showToast(getString(R.string.printer_connected));
+
+                    showToast(DatecsUtil.getStringFromStringResource(app, "printer_connected"));
                 } catch (IOException e) {
                     e.printStackTrace();
                     sendStatusUpdate(false);
-                    callbackContext.error(this.getErrorByCode(20));
-                    showError(getString(R.string.failed_to_initialize) + ": " + e.getMessage(), false);
+                    callbackContext.error(sdk.getErrorByCode(20));
+                    showError(DatecsUtil.getStringFromStringResource(app, "failed_to_initialize") + ": " + e.getMessage(), false);
                     return;
                 }
             }
-        }, getString(R.string.printer), getString(R.string.connecting));
+        }, DatecsUtil.getStringFromStringResource(app, "printer"), DatecsUtil.getStringFromStringResource(app, "connecting"));
     }
 
     /**
@@ -319,7 +328,7 @@ public class DatecsSDKWrapper {
             e.printStackTrace();
             sendStatusUpdate(false);
             callbackContext.error(this.getErrorByCode(19));
-            showError(getString(R.string.failed_to_create_communication) + ": " + e.getMessage(), false);
+            showError(DatecsUtil.getStringFromStringResource(app, "failed_to_create_communication") + ": " + e.getMessage(), false);
         }
         return device.createRfcommSocketToServiceRecord(uuid);
     }
