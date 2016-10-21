@@ -16,7 +16,7 @@
   <string name="err_set_barcode">Erro ao setar configurações do código de barras</string>
   <string name="err_bt_socket">Não foi possível criar o socket Bluetooth</string>
   <string name="failed_to_connect">Falha ao conectar</string>
-  <string name="failed_to_create_communication">Falha ao criar comunicação</string>
+  <string name="failed_to_comm">Falha ao criar comunicação</string>
   <string name="failed_to_initialize">Falha ao inicializar</string>
   <string name="low_battery">Pouca bateria</string>
   <string name="no_paper">Sem papel</string>

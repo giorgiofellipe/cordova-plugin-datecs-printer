@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-plugin-datecs-printer"
-        version="0.4.1">
+        version="0.4.2">
 
     <name>DatecsPrinter</name>
     <description>Cordova Datecs Mobile Bluetooth Printer Plugin</description>
@@ -48,8 +48,9 @@
             <string name="err_print_rect">Error printing rectangle</string>
             <string name="err_print_test">Error printing test page</string>
             <string name="err_set_barcode">Error setting barcode settings</string>
+            <string name="err_bt_socket">Could not create Bluetooth socket</string>
             <string name="failed_to_connect">Failed to connect: </string>
-            <string name="failed_to_create_communication">Failed to create communication: </string>
+            <string name="failed_to_comm">Failed to create communication: </string>
             <string name="failed_to_initialize">Failed to initialize: </string>
             <string name="low_battery">Low battery</string>
             <string name="no_paper">No paper</string>

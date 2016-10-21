@@ -53,7 +53,7 @@ public class DatecsSDKWrapper {
     private CallbackContext mConnectCallbackContext;
     private CallbackContext mCallbackContext;
     private ProgressDialog mDialog;
-    private final CordovaInterface mCordova;
+    private CordovaInterface mCordova;
     private CordovaWebView mWebView;
     private final Application app;
 
@@ -115,7 +115,7 @@ public class DatecsSDKWrapper {
         this.errorCode.put(6, DatecsUtil.getStringFromStringResource(app, "err_fetch_st"));
         this.errorCode.put(7, DatecsUtil.getStringFromStringResource(app, "err_fetch_tmp"));
         this.errorCode.put(8, DatecsUtil.getStringFromStringResource(app, "err_print_barcode"));
-        this.errorCode.put(9, DatecsUtil.getStringFromStringResource(app, "err_print_tp"));
+        this.errorCode.put(9, DatecsUtil.getStringFromStringResource(app, "err_print_test"));
         this.errorCode.put(10, DatecsUtil.getStringFromStringResource(app, "err_set_barcode"));
         this.errorCode.put(11, DatecsUtil.getStringFromStringResource(app, "err_print_img"));
         this.errorCode.put(12, DatecsUtil.getStringFromStringResource(app, "err_print_rect"));
@@ -328,7 +328,7 @@ public class DatecsSDKWrapper {
             e.printStackTrace();
             sendStatusUpdate(false);
             callbackContext.error(this.getErrorByCode(19));
-            showError(DatecsUtil.getStringFromStringResource(app, "failed_to_create_communication") + ": " + e.getMessage(), false);
+            showError(DatecsUtil.getStringFromStringResource(app, "failed_to_comm") + ": " + e.getMessage(), false);
         }
         return device.createRfcommSocketToServiceRecord(uuid);
     }
