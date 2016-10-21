@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="connecting">Connecting..</string>
-  <string name="err_disconnect_printer">Error disconnecting printer: </string>
+  <string name="connecting">Connecting...</string>
+  <string name="err_disconnect_printer">Error disconnecting printer</string>
   <string name="err_fetch_st">Error fetching status</string>
   <string name="err_fetch_tmp">Error fetching temperature</string>
   <string name="err_lines_number">The number of lines must be between 0 and 255</string>
@@ -16,13 +16,13 @@
   <string name="err_set_barcode">Error setting barcode settings</string>
   <string name="err_bt_socket">Could not create Bluetooth socket</string>
   <string name="failed_to_connect">Failed to connect: </string>
-  <string name="failed_to_comm">Failed to create communication: </string>
+  <string name="failed_to_comm">Failed to create communication</string>
   <string name="failed_to_initialize">Failed to initialize: </string>
   <string name="low_battery">Low battery</string>
   <string name="no_paper">No paper</string>
   <string name="overheating">Overheating</string>
   <string name="paper_ok">Paper ok</string>
   <string name="printer">Printer</string>
-  <string name="printer_connected">Printer connected!</string>
+  <string name="printer_connected">Printer connected</string>
   <string name="printer_disconnected">Printer disconnected</string>
 </resources>

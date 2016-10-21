@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="connecting">Conectando..</string>
+  <string name="connecting">Conectando...</string>
   <string name="err_disconnect_printer">Erro ao desconectar impressora</string>
   <string name="err_fetch_st">Erro ao buscar status</string>
   <string name="err_fetch_tmp">Erro ao buscar temperatura</string>
@@ -23,6 +23,6 @@
   <string name="overheating">Superaquecimento</string>
   <string name="paper_ok">Papel ok</string>
   <string name="printer">Impressora</string>
-  <string name="printer_connected">Impressora Conectada!</string>
+  <string name="printer_connected">Impressora conectada</string>
   <string name="printer_disconnected">Impressora desconectada</string>
 </resources>

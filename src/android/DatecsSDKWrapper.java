@@ -289,22 +289,17 @@ public class DatecsSDKWrapper {
                     out = mBluetoothSocket.getOutputStream();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    sendStatusUpdate(false);
                     callbackContext.error(sdk.getErrorByCode(18));
-                    showError(DatecsUtil.getStringFromStringResource(app, "failed_to_connect") + ": " + e.getMessage(), false);
                     return;
                 }
 
                 try {
                     initializePrinter(in, out, callbackContext);
-                    sendStatusUpdate(true);
-
                     showToast(DatecsUtil.getStringFromStringResource(app, "printer_connected"));
+                    sendStatusUpdate(true);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    sendStatusUpdate(false);
                     callbackContext.error(sdk.getErrorByCode(20));
-                    showError(DatecsUtil.getStringFromStringResource(app, "failed_to_initialize") + ": " + e.getMessage(), false);
                     return;
                 }
             }
