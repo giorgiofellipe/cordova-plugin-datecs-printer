@@ -10,7 +10,7 @@ import org.json.JSONException;
 
 public class DatecsPrinter extends CordovaPlugin {
 	private DatecsSDKWrapper printer;
-	private static CordovaWebView mWebView;
+
 	private enum Option {
 		listBluetoothDevices,
 				connect,
@@ -32,19 +32,14 @@ public class DatecsPrinter extends CordovaPlugin {
 				printPage;
 	}
 
-	public void setWebView(CordovaWebView webView) {
-		mWebView = webView;
-	}
-
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 		super.initialize(cordova, webView);
-		setWebView(webView);
+		printer = new DatecsSDKWrapper(cordova);
+		printer.setWebView(webView);
 	}
 
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-		printer = new DatecsSDKWrapper(cordova);
-		printer.setWebView(mWebView);
 		printer.setCallbackContext(callbackContext);
 
 		Option option = null;
