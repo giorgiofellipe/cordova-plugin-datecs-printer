@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="connecting">Connexion...</string>
+  <string name="err_disconnect_printer">Échec de déconnexion</string>
+  <string name="err_fetch_st">Échec d'extraction de l'état</string>
+  <string name="err_fetch_tmp">Échec d'extraction de la température</string>
+  <string name="err_lines_number">Le nombre de lignes doit être compris entre 0 et 255</string>
+  <string name="err_no_bt_adapter">Adaptateur Bluetooth non disponible</string>
+  <string name="err_no_bt_device">Aucun périphérique Bluetooth trouvé</string>
+  <string name="err_feed_paper">Erreur d'alimentation du papier à l'imprimante</string>
+  <string name="err_print">Erreur d'impression</string>
+  <string name="err_print_barcode">Erreur d'impression du code à barre</string>
+  <string name="err_print_img">Erreur d'impression de l'image</string>
+  <string name="err_print_rect">Erreur d'impression du rectangle</string>
+  <string name="err_print_test">Erreur d'impression de la page de test</string>
+  <string name="err_set_barcode">Erreur de réglage des paramètres de codes à barres</string>
+  <string name="err_bt_socket">Impossible de créer le socket Bluetooth</string>
+  <string name="failed_to_connect">Échec de connexion: </string>
+  <string name="failed_to_comm">Impossible d'établir la communication</string>
+  <string name="failed_to_initialize">Échec de l'initialisation: </string>
+  <string name="low_battery">Batterie faible</string>
+  <string name="no_paper">Pas de papier</string>
+  <string name="overheating">Surchauffe</string>
+  <string name="paper_ok">Papier ok</string>
+  <string name="printer">Imprimante</string>
+  <string name="printer_connected">Imprimante connectée</string>
+  <string name="printer_disconnected">Imprimante déconnecté</string>
+</resources>
