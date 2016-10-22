@@ -24,5 +24,5 @@
   <string name="paper_ok">Papier ok</string>
   <string name="printer">Imprimante</string>
   <string name="printer_connected">Imprimante connectée</string>
-  <string name="printer_disconnected">Imprimante déconnecté</string>
+  <string name="printer_disconnected">Imprimante déconnectée</string>
 </resources>
