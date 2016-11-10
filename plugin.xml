@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-plugin-datecs-printer"
-        version="0.4.5">
+        version="0.4.6">
 
     <name>DatecsPrinter</name>
     <description>Cordova Datecs Mobile Bluetooth Printer Plugin</description>
@@ -15,6 +15,8 @@
 
     <!-- android -->
     <platform name="android">
+        <framework src="com.android.support:support-v4:+" value="gradle" />
+
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="DatecsPrinter">
                 <param name="android-package" value="com.giorgiofellipe.datecsprinter.DatecsPrinter"/>
@@ -33,6 +35,8 @@
         <source-file src="src/android/DatecsUtil.java" target-dir="src/com/giorgiofellipe/datecsprinter" />
 
         <source-file src="src/android/res/values-pt/strings.xml" target-dir="res/values-pt"/>
+        <source-file src="src/android/res/values-fr/strings.xml" target-dir="res/values-fr"/>
+        <source-file src="src/android/res/values-ar/strings.xml" target-dir="res/values-ar"/>
 
         <config-file target="res/values/strings.xml" parent="/resources">
             <string name="connecting">Connecting...</string>

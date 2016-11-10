@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="connecting">اتصال...</string>
+  <string name="err_disconnect_printer">فشل قطع الاتصال مع الطابعة</string>
+  <string name="err_fetch_st">خطأ أثناء فحص الحالة</string>
+  <string name="err_fetch_tmp">خطأ أثناء فحص الحرارة</string>
+  <string name="err_lines_number">عدد الخطوط يجب أن يكون بين 0 و 255</string>
+  <string name="err_no_bt_adapter">محول البلوتوث غير متوفر</string>
+  <string name="err_no_bt_device">لا يوجد أي جهاز بلوتوث</string>
+  <string name="err_feed_paper">خطا في تغذية الطابعة بالورق</string>
+  <string name="err_print">خطأ في الطباعة</string>
+  <string name="err_print_barcode">خطأ في طباعة شفرة القضبان</string>
+  <string name="err_print_img">خطأ في طباعة الصورة</string>
+  <string name="err_print_rect">خطأ في طباعة المستطيل</string>
+  <string name="err_print_test">خطأ في طباعة الصفحة التجريبية</string>
+  <string name="err_set_barcode">خطا اثناء تعيين اعدادات شفرة القضبان</string>
+  <string name="err_bt_socket">لا يمكن إنشاء مقبس البلوتوث</string>
+  <string name="failed_to_connect">فشل الاتصال: </string>
+  <string name="failed_to_comm">فشل في انشاء الاتصال</string>
+  <string name="failed_to_initialize">فشل التهيئة: </string>
+  <string name="low_battery">البطارية ضعيفة</string>
+  <string name="no_paper">لا يوجد ورق</string>
+  <string name="overheating">ارتفاع درجة الحرارة</string>
+  <string name="paper_ok">الورق موجود</string>
+  <string name="printer">الطابعة</string>
+  <string name="printer_connected">الطابعة متصلة</string>
+  <string name="printer_disconnected">الطابعة غير متصلة</string>
+</resources>
