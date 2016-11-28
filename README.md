@@ -17,6 +17,16 @@ _(every function accept at least two parameters, and they're the last ones: onSu
   - 4- Alignment code (you can find the codes [here](#alignment-codes))
 - **printBarcode(barcodeType, barcodeData):** this will print a barcode accordingly to the given type and data (you can find the barcode types code [here](#barcode-types-code))
 
+### Reported Working Printer Models
+
+These models were reported as working as expected:
+
+<sub>(if you notice another model please let us know by opening a issue and reporting)</sub>
+
+- DATECS DPP 250
+- DATECS DPP 350
+- EPSON TM P80
+
 ### Example
 ```javascript
 window.DatecsPrinter.listBluetoothDevices(
