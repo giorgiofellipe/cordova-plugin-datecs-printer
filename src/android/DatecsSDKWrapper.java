@@ -297,9 +297,22 @@ public class DatecsSDKWrapper {
                     mBluetoothSocket.connect();
                     in = mBluetoothSocket.getInputStream();
                     out = mBluetoothSocket.getOutputStream();
+                } catch (IOException e) {
+                    //fallback
+                    try {
+                        mBluetoothSocket = (BluetoothSocket) device.getClass().getMethod("createRfcommSocket", new Class[] {int.class}).invoke(device, 1);
+                        Thread.sleep(50);
+                        mBluetoothSocket.connect();
+                        in = mBluetoothSocket.getInputStream();
+                        out = mBluetoothSocket.getOutputStream();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        callbackContext.error(sdk.getErrorByCode(18, ex));
+                        return;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    callbackContext.error(sdk.getErrorByCode(18));
+                    callbackContext.error(sdk.getErrorByCode(18, e));
                     return;
                 }
 
