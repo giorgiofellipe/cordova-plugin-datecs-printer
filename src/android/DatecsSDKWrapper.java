@@ -173,6 +173,16 @@ public class DatecsSDKWrapper {
                     map.put("type", device.getType());
                     map.put("address", device.getAddress());
                     map.put("name", device.getName());
+                    String deviceAlias = device.getName();
+                    try {
+                        Method method = device.getClass().getMethod("getAliasName");
+                        if (method != null) {
+                            deviceAlias = (String) method.invoke(device);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    map.put("aliasName", deviceAlias);
                     JSONObject jObj = new JSONObject(map);
                     json.put(jObj);
                 }
