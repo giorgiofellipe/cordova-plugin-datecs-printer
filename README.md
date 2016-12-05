@@ -2,6 +2,8 @@
 
 The first thing that you must know is that the plugin is available through this variable `window.DatecsPrinter`.
 
+*As well as any other plugin it will only be available after `deviceready` event is fired*
+
 So, there's a lot of functions that you can call to execute each operation and perform the printer actions, these are the most important ones (you can see all on [printer.js](www/printer.js) file):
 
 _(every function accept at least two parameters, and they're the last ones: onSuccess function and onError function)_
