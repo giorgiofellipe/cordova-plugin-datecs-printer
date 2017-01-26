@@ -28,6 +28,7 @@ These models were reported as working as expected:
 - DATECS DPP 250
 - DATECS DPP 350
 - EPSON TM P80
+- Bixolon SPP-R210
 
 ### Example
 ```javascript
