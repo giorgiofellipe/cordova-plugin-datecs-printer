@@ -113,7 +113,7 @@ function printMyBarcode() {
 - LEFT = 0
 - RIGHT = 2
 
-### Barcode Types Code
+### Barcode Type Codes
 - UPC-A =	65
 - UPC-E =	66
 - EAN13 (JAN13) =	67
@@ -126,6 +126,12 @@ function printMyBarcode() {
 - PDF417 = 74
 - CODE 128 Auto = 75
 - EAN 128 = 76
+
+### Barcode HRI Position Codes
+- NONE	= 0
+- ABOVE	= 1
+- BELOW	= 2
+- BOTH	= 3
 
 ## ConnectionStatus Event
 
