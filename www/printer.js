@@ -63,6 +63,12 @@ var printer = {
   },
   printPage: function (onSuccess, onError) {
     exec(onSuccess, onError, 'DatecsPrinter', 'printPage', []);
+  },
+  write: function (bytes, onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'write', [bytes]);
+  },
+  writeHex: function (hex, onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'writeHex', [hex]);
   }
 };
 module.exports = printer;

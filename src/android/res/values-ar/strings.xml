@@ -15,6 +15,7 @@
   <string name="err_print_test">خطأ في طباعة الصفحة التجريبية</string>
   <string name="err_set_barcode">خطا اثناء تعيين اعدادات شفرة القضبان</string>
   <string name="err_bt_socket">لا يمكن إنشاء مقبس البلوتوث</string>
+  <string name="err_write">Could not write these bytes to this printer</string>
   <string name="failed_to_connect">فشل الاتصال: </string>
   <string name="failed_to_comm">فشل في انشاء الاتصال</string>
   <string name="failed_to_initialize">فشل التهيئة: </string>

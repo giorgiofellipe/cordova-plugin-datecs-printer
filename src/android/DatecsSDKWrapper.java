@@ -127,6 +127,7 @@ public class DatecsSDKWrapper {
         this.errorCode.put(18, DatecsUtil.getStringFromStringResource(app, "failed_to_connect"));
         this.errorCode.put(19, DatecsUtil.getStringFromStringResource(app, "err_bt_socket"));
         this.errorCode.put(20, DatecsUtil.getStringFromStringResource(app, "failed_to_initialize"));
+        this.errorCode.put(21, DatecsUtil.getStringFromStringResource(app, "err_write"));
     }
 
     private JSONObject getErrorByCode(int code) {
@@ -432,6 +433,30 @@ public class DatecsSDKWrapper {
             mCallbackContext.success();
         } catch (Exception e) {
             mCallbackContext.error(this.getErrorByCode(5, e));
+        }
+    }
+
+    /**
+     * Converts HEX String into byte array and write
+     *
+     * @param String
+     */
+    public void writeHex(String s) {
+        write(DatecsUtil.hexStringToByteArray(s));
+    }
+
+    /**
+     * Writes all bytes from the specified byte array to this printer
+     *
+     * @param byte[]
+     */
+    public void write(byte[] b) {
+        try {
+            mPrinter.write(b);
+            mPrinter.flush();
+            mCallbackContext.success();
+        } catch (Exception e) {
+            mCallbackContext.error(this.getErrorByCode(21, e));
         }
     }
 

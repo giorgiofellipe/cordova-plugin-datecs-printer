@@ -15,6 +15,7 @@
   <string name="err_print_test">Erreur d\'impression de la page de test</string>
   <string name="err_set_barcode">Erreur de réglage des paramètres de codes à barres</string>
   <string name="err_bt_socket">Impossible de créer le socket Bluetooth</string>
+  <string name="err_write">Could not write these bytes to this printer</string>
   <string name="failed_to_connect">Échec de connexion</string>
   <string name="failed_to_comm">Impossible d\'établir la communication</string>
   <string name="failed_to_initialize">Échec de l\'initialisation</string>
