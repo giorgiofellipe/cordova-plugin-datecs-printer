@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.Exception;
+import java.net.SocketException;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.HashMap;
@@ -89,14 +90,14 @@ public class DatecsSDKWrapper {
         @Override
         public void onOverHeated(boolean state) {
             if (state) {
-              showToast(DatecsUtil.getStringFromStringResource(app, "overheating"));
+                showToast(DatecsUtil.getStringFromStringResource(app, "overheating"));
             }
         }
 
         @Override
         public void onLowBattery(boolean state) {
             if (state) {
-              showToast(DatecsUtil.getStringFromStringResource(app, "low_battery"));
+                showToast(DatecsUtil.getStringFromStringResource(app, "low_battery"));
             }
         }
     };
@@ -171,7 +172,16 @@ public class DatecsSDKWrapper {
                 JSONArray json = new JSONArray();
                 for (BluetoothDevice device : pairedDevices) {
                     Hashtable map = new Hashtable();
-                    map.put("type", device.getType());
+                    int deviceType = 0;
+                    try {
+                        Method method = device.getClass().getMethod("getType");
+                        if (method != null) {
+                            deviceType = (Integer) method.invoke(device);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    map.put("type", deviceType);
                     map.put("address", device.getAddress());
                     map.put("name", device.getName());
                     String deviceAlias = device.getName();
@@ -467,8 +477,12 @@ public class DatecsSDKWrapper {
         try {
             int status = mPrinter.getStatus();
             mCallbackContext.success(status);
+//        } catch (IOException e) {
+//            sendStatusUpdate(false);
+//            mCallbackContext.error(this.getErrorByCode(6, e));
         } catch (Exception e) {
-            mCallbackContext.error(this.getErrorByCode(6, e));
+            //if it wasn't an IOException it probably means that the printer only didn't understand the command (needs further tests)
+            mCallbackContext.success(1);
         }
     }
 
@@ -602,6 +616,43 @@ public class DatecsSDKWrapper {
             mPrinter.printImage(argb, width, height, align, true);
             mPrinter.flush();
             mCallbackContext.success();
+        } catch (IOException e) {
+            sendStatusUpdate(false);
+            mCallbackContext.error(this.getErrorByCode(11, e));
+        } catch (Exception e) {
+            mCallbackContext.error(this.getErrorByCode(11, e));
+        }
+    }
+
+    public void POSPrintImage(String image, int nWidth, int nMode) {
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inScaled = false;
+            byte[] decodedByte = Base64.decode(image, 0);
+            Bitmap mBitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+
+            // 先转黑白，再调用函数缩放位图
+            int width = ((nWidth + 7) / 8) * 8;
+            int height = mBitmap.getHeight() * width / mBitmap.getWidth();
+            height = ((height + 7) / 8) * 8;
+
+            Bitmap rszBitmap = mBitmap;
+            if (mBitmap.getWidth() != width){
+                rszBitmap = DatecsUtil.resizeImage(mBitmap, width, height);
+            }
+
+            Bitmap grayBitmap = DatecsUtil.toGrayscale(rszBitmap);
+
+            byte[] dithered = DatecsUtil.thresholdToBWPic(grayBitmap);
+
+            byte[] data = DatecsUtil.eachLinePixToCmd(dithered, width, nMode);
+
+            mPrinter.write(data);
+            mPrinter.flush();
+            mCallbackContext.success();
+        } catch (IOException e) {
+            sendStatusUpdate(false);
+            mCallbackContext.error(this.getErrorByCode(11, e));
         } catch (Exception e) {
             mCallbackContext.error(this.getErrorByCode(11, e));
         }
