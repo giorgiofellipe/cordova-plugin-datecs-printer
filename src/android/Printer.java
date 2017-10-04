@@ -352,7 +352,7 @@ public class Printer {
                 byte[] buffer = new byte[1];
                 this.request(buffer.length, 1000);
                 System.arraycopy(this.mDataBuffer, 0, buffer, 0, buffer.length);
-                status = buffer[0] & 255;
+                status = (buffer[0] & 255) - 18;
             }
         }
         return status;
