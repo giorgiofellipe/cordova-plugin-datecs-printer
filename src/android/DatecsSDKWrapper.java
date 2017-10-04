@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.Exception;
-import java.net.SocketException;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.HashMap;
@@ -41,7 +40,7 @@ import android.graphics.BitmapFactory;
 
 import com.datecs.api.BuildInfo;
 import com.datecs.api.printer.PrinterInformation;
-import com.datecs.api.printer.Printer;
+// import com.datecs.api.printer.Printer;
 import com.datecs.api.printer.ProtocolAdapter;
 
 public class DatecsSDKWrapper {
@@ -61,42 +60,31 @@ public class DatecsSDKWrapper {
     /**
      * Interface de eventos da Impressora
      */
-    private final ProtocolAdapter.ChannelListener mChannelListener = new ProtocolAdapter.ChannelListener() {
+    private final ProtocolAdapter.PrinterListener mChannelListener = new ProtocolAdapter.PrinterListener() {
         @Override
-        public void onReadEncryptedCard() {
-            // TODO: onReadEncryptedCard
-        }
-
-        @Override
-        public void onReadCard() {
-            // TODO: onReadCard
-        }
-
-        @Override
-        public void onReadBarcode() {
-            // TODO: onReadBarcode
-        }
-
-        @Override
-        public void onPaperReady(boolean state) {
-            if (state) {
-                showToast(DatecsUtil.getStringFromStringResource(app, "paper_ok"));
-            } else {
-                closeActiveConnections();
+        public void onPaperStateChanged(boolean hasNoPaper) {
+            if (hasNoPaper) {
+                sendStatusUpdate(true, false);
                 showToast(DatecsUtil.getStringFromStringResource(app, "no_paper"));
+            } else {
+                sendStatusUpdate(true, true);
+                showToast(DatecsUtil.getStringFromStringResource(app, "paper_ok"));
             }
         }
 
         @Override
-        public void onOverHeated(boolean state) {
-            if (state) {
+        public void onThermalHeadStateChanged(boolean overheated) {
+            if (overheated) {
+                closeActiveConnections();
+                sendStatusUpdate(false, false);
                 showToast(DatecsUtil.getStringFromStringResource(app, "overheating"));
             }
         }
 
         @Override
-        public void onLowBattery(boolean state) {
-            if (state) {
+        public void onBatteryStateChanged(boolean lowBattery) {
+            if (lowBattery) {
+                sendStatusUpdate(true, true, false);
                 showToast(DatecsUtil.getStringFromStringResource(app, "low_battery"));
             }
         }
@@ -260,11 +248,11 @@ public class DatecsSDKWrapper {
      */
     private synchronized void closePrinterConnection() {
         if (mPrinter != null) {
-            mPrinter.release();
+            mPrinter.close();
         }
 
         if (mProtocolAdapter != null) {
-            mProtocolAdapter.release();
+            mProtocolAdapter.close();
         }
     }
 
@@ -372,34 +360,22 @@ public class DatecsSDKWrapper {
     protected void initializePrinter(InputStream inputStream, OutputStream outputStream, CallbackContext callbackContext) throws IOException {
         mProtocolAdapter = new ProtocolAdapter(inputStream, outputStream);
         if (mProtocolAdapter.isProtocolEnabled()) {
+            mProtocolAdapter.setPrinterListener(mChannelListener);
+            
             final ProtocolAdapter.Channel channel = mProtocolAdapter.getChannel(ProtocolAdapter.CHANNEL_PRINTER);
-            channel.setListener(mChannelListener);
-            // Create new event pulling thread
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        try {
-                            Thread.sleep(50);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                        try {
-                            channel.pullEvent();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            sendStatusUpdate(false);
-                            showError(e.getMessage(), mRestart);
-                            break;
-                        }
-                    }
-                }
-            }).start();
+            
             mPrinter = new Printer(channel.getInputStream(), channel.getOutputStream());
         } else {
             mPrinter = new Printer(mProtocolAdapter.getRawInputStream(), mProtocolAdapter.getRawOutputStream());
         }
+
+
+        mPrinter.setConnectionListener(new Printer.ConnectionListener() {
+            @Override
+            public void onDisconnect() {
+                sendStatusUpdate(false);
+            }
+        });
         callbackContext.success();
     }
 
@@ -477,12 +453,8 @@ public class DatecsSDKWrapper {
         try {
             int status = mPrinter.getStatus();
             mCallbackContext.success(status);
-//        } catch (IOException e) {
-//            sendStatusUpdate(false);
-//            mCallbackContext.error(this.getErrorByCode(6, e));
         } catch (Exception e) {
-            //if it wasn't an IOException it probably means that the printer only didn't understand the command (needs further tests)
-            mCallbackContext.success(1);
+            mCallbackContext.error(this.getErrorByCode(6, e));
         }
     }
 
@@ -616,43 +588,6 @@ public class DatecsSDKWrapper {
             mPrinter.printImage(argb, width, height, align, true);
             mPrinter.flush();
             mCallbackContext.success();
-        } catch (IOException e) {
-            sendStatusUpdate(false);
-            mCallbackContext.error(this.getErrorByCode(11, e));
-        } catch (Exception e) {
-            mCallbackContext.error(this.getErrorByCode(11, e));
-        }
-    }
-
-    public void POSPrintImage(String image, int nWidth, int nMode) {
-        try {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inScaled = false;
-            byte[] decodedByte = Base64.decode(image, 0);
-            Bitmap mBitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-
-            // 先转黑白，再调用函数缩放位图
-            int width = ((nWidth + 7) / 8) * 8;
-            int height = mBitmap.getHeight() * width / mBitmap.getWidth();
-            height = ((height + 7) / 8) * 8;
-
-            Bitmap rszBitmap = mBitmap;
-            if (mBitmap.getWidth() != width){
-                rszBitmap = DatecsUtil.resizeImage(mBitmap, width, height);
-            }
-
-            Bitmap grayBitmap = DatecsUtil.toGrayscale(rszBitmap);
-
-            byte[] dithered = DatecsUtil.thresholdToBWPic(grayBitmap);
-
-            byte[] data = DatecsUtil.eachLinePixToCmd(dithered, width, nMode);
-
-            mPrinter.write(data);
-            mPrinter.flush();
-            mCallbackContext.success();
-        } catch (IOException e) {
-            sendStatusUpdate(false);
-            mCallbackContext.error(this.getErrorByCode(11, e));
         } catch (Exception e) {
             mCallbackContext.error(this.getErrorByCode(11, e));
         }
@@ -734,14 +669,22 @@ public class DatecsSDKWrapper {
      *
      * @param connection status
      */
-    private void sendStatusUpdate(boolean isConnected) {
+    private void sendStatusUpdate(boolean isConnected, boolean hasPaper, boolean lowBattery) {
         final Intent intent = new Intent("DatecsPrinter.connectionStatus");
 
         Bundle b = new Bundle();
-        b.putString( "userdata", "{ isConnected: "+ isConnected +"}" );
+        b.putString( "userdata", "{ isConnected: "+ isConnected + ", hasPaper: "+ hasPaper + ", lowBattery: "+ lowBattery + "}" );
 
-        intent.putExtras( b);
+        intent.putExtras(b);
 
         LocalBroadcastManager.getInstance(mWebView.getContext()).sendBroadcastSync(intent);
+    }
+    
+    private void sendStatusUpdate(boolean isConnected, boolean hasPaper) {
+        this.sendStatusUpdate(isConnected, hasPaper, false);
+    }
+
+    private void sendStatusUpdate(boolean isConnected) {
+        this.sendStatusUpdate(isConnected, true, false);
     }
 }

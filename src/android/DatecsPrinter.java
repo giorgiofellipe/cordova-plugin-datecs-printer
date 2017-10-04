@@ -98,8 +98,7 @@ public class DatecsPrinter extends CordovaPlugin {
 				int imgWidth = args.getInt(1);
 				int imgHeight = args.getInt(2);
 				int imgAlign = args.getInt(3);
-//				printer.printImage(image, imgWidth, imgHeight, imgAlign);
-				printer.POSPrintImage(image, imgWidth, 0);
+				printer.printImage(image, imgWidth, imgHeight, imgAlign);
 				break;
 			case printLogo:
 				break;
