@@ -39,8 +39,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.datecs.api.BuildInfo;
-import com.datecs.api.printer.PrinterInformation;
-// import com.datecs.api.printer.Printer;
 import com.datecs.api.printer.ProtocolAdapter;
 
 public class DatecsSDKWrapper {
