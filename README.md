@@ -34,6 +34,7 @@ These models were reported as working as expected:
 - MPT-II (58mm)
 - DAPPER DP-HT201 58mm
 - RG-MTP80B
+- Black Copper MINI Thermal Printer BC-P58B
 
 
 ### Example
