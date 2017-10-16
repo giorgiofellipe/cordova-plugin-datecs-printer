@@ -27,6 +27,7 @@ These models were reported as working as expected:
 
 - DATECS DPP 250
 - DATECS DPP 350
+- DATECS DPP 450
 - EPSON TM P80
 - Bixolon SPP-R210
 - MPT-3 (JP Printer)
