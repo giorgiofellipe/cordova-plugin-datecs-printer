@@ -501,7 +501,7 @@ public class DatecsSDKWrapper {
      * @param eccLv - the error collection control level, where 1: L (7%), 2: M (15%), 3: Q (25%), 4: H (30%)
      * @param data - the QRCode data. The data must be between 1 and 448 symbols long.
      */
-    public void printQRcode(int size, int eccLv, String data) {
+    public void printQRCode(int size, int eccLv, String data) {
         try {
             mPrinter.printQRCode(size, eccLv, data);
             mPrinter.flush();
