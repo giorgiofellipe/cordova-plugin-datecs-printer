@@ -101,7 +101,30 @@ function printMyBarcode() {
     }
   );
 }
+```
 
+#### Print QRCode example
+
+```
+function printQRCode() {
+  window.DatecsPrinter.printQRCode(
+    4, 
+    4, 
+    'http://giorgiofellipe.com.br',
+    function() {
+      alert('success!');
+    },
+    function() {
+      alert(JSON.stringify(error));
+    }
+  );
+}
+```
+
+Some printer models may not be able to print QRCode using the above way. 
+Here goes another way, using the `node-qrcode` package and `printImage` method.
+
+```
 function printQRCode() {
 
     //Create QR Code with node-qrcode package
