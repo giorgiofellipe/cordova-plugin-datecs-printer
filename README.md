@@ -1,5 +1,7 @@
 # cordova-plugin-datecs-printer
 
+#**PLEASE ASK QUESTIONS ON [STACKOVERFLOW](https://stackoverflow.com) USING THE TAG cordova-plugin-datecs-printer**
+
 The first thing that you must know is that the plugin is available through this variable `window.DatecsPrinter`.
 
 *As well as any other plugin it will only be available after `deviceready` event is fired*
