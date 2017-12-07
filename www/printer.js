@@ -43,7 +43,7 @@ var printer = {
   printBarcode: function (type, data, onSuccess, onError) {
     exec(onSuccess, onError, 'DatecsPrinter', 'printBarcode', [type, data]);
   },
-  printQRcode: function(size, eccLv, data, onSuccess, onError) {
+  printQRCode: function(size, eccLv, data, onSuccess, onError) {
     exec(onSuccess, onError, 'DatecsPrinter', 'printQRCode', [size, eccLv, data]);
   },
   printImage: function (image, width, height, align, onSuccess, onError) {

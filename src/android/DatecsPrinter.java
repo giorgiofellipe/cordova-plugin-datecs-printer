@@ -21,7 +21,7 @@ public class DatecsPrinter extends CordovaPlugin {
 				getTemperature,
 				setBarcode,
 				printBarcode,
-				printQRcode,
+				printQRCode,
 				printImage,
 				printLogo,
 				printSelfTest,
@@ -94,7 +94,7 @@ public class DatecsPrinter extends CordovaPlugin {
 				String data = args.getString(1);
 				printer.printBarcode(type, data);
 				break;
-			case printQRcode:
+			case printQRCode:
 				int size = args.getInt(0);
 				int eccLv = args.getInt(1);
 				data = args.getString(2);
