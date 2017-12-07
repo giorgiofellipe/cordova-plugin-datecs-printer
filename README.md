@@ -105,7 +105,7 @@ function printMyBarcode() {
 
 #### Print QRCode example
 
-```
+```javascript
 function printQRCode() {
   window.DatecsPrinter.printQRCode(
     4, 
@@ -124,7 +124,7 @@ function printQRCode() {
 Some printer models may not be able to print QRCode using the above way. 
 Here goes another way, using the `node-qrcode` package and `printImage` method.
 
-```
+```javascript
 function printQRCode() {
 
     //Create QR Code with node-qrcode package
