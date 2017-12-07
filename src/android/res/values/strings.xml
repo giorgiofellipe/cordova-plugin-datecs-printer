@@ -26,4 +26,5 @@
   <string name="printer">Printer</string>
   <string name="printer_connected">Printer connected</string>
   <string name="printer_disconnected">Printer disconnected</string>
+  <string name="err_print_qrcode">Error printing QRcode</string>
 </resources>

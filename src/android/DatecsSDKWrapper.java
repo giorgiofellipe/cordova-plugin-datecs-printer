@@ -115,6 +115,7 @@ public class DatecsSDKWrapper {
         this.errorCode.put(19, DatecsUtil.getStringFromStringResource(app, "err_bt_socket"));
         this.errorCode.put(20, DatecsUtil.getStringFromStringResource(app, "failed_to_initialize"));
         this.errorCode.put(21, DatecsUtil.getStringFromStringResource(app, "err_write"));
+        this.errorCode.put(22, DatecsUtil.getStringFromStringResource(app, "err_print_qrcode"));
     }
 
     private JSONObject getErrorByCode(int code) {
@@ -492,6 +493,24 @@ public class DatecsSDKWrapper {
             mCallbackContext.error(this.getErrorByCode(8, e));
         }
     }
+
+    /**
+     * Print a QRCode
+     *
+     * @param size - the size of symbol, value in {1, 4, 6, 8, 10, 12, 14}
+     * @param eccLv - the error collection control level, where 1: L (7%), 2: M (15%), 3: Q (25%), 4: H (30%)
+     * @param data - the QRCode data. The data must be between 1 and 448 symbols long.
+     */
+    public void printQRcode(int size, int eccLv, String data) {
+        try {
+            mPrinter.printQRCode(size, eccLv, data);
+            mPrinter.flush();
+            mCallbackContext.success();
+        } catch (Exception e) {
+            mCallbackContext.error(this.getErrorByCode(22, e));
+        }
+    }
+
 
     /**
      * Print a selftest page

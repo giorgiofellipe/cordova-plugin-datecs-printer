@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-plugin-datecs-printer"
-        version="0.7.4">
+        version="0.8.0">
 
     <name>DatecsPrinter</name>
     <description>Cordova Datecs Mobile Bluetooth Printer Plugin</description>
@@ -67,6 +67,7 @@
             <string name="printer_connected">Printer connected</string>
             <string name="printer_disconnected">Printer disconnected</string>
             <string name="err_write">Could not write these bytes to this printer</string>
+            <string name="err_print_qrcode">Error printing QRcode</string>
         </config-file>
     </platform>
 </plugin>

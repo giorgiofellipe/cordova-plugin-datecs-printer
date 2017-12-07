@@ -26,4 +26,5 @@
   <string name="printer">Impressora</string>
   <string name="printer_connected">Impressora conectada</string>
   <string name="printer_disconnected">Impressora desconectada</string>
+  <string name="err_print_qrcode">Erro ao imprimir QRcode</string>
 </resources>
