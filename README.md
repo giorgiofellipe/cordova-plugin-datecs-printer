@@ -101,6 +101,48 @@ function printMyBarcode() {
     }
   );
 }
+
+function printQRCode() {
+
+    //Create QR Code with node-qrcode package
+    //https://github.com/soldair/node-qrcode
+
+    var QRCode = require('qrcode');
+
+    //Generate the QR image
+    QRCode.toDataURL('https://your-qr-data', { errorCorrectionLevel: 'L' }, function (err, url) {
+
+      var image = new Image();
+
+      image.src = url;
+
+      var canvas = document.createElement('canvas');
+        canvas.height = 164;
+        canvas.width = 164;
+        var context = canvas.getContext('2d');
+
+        context.drawImage(image, 0, 0);
+
+        var imageData = canvas.toDataURL('image/jpeg').replace(/^data:image\/(png|jpg|jpeg);base64,/, ""); //remove 
+
+      window.DatecsPrinter.printImage(
+            imageData, //base64
+            canvas.height, 
+            canvas.width, 
+            //align
+            1,
+
+            function() {
+            },
+
+            function(error) {
+                alert(JSON.stringify(error));
+            }
+        );
+
+  });
+
+}
 ```
 
 ### Tags definition
