@@ -18,6 +18,7 @@ _(every function accept at least two parameters, and they're the last ones: onSu
   - 3- Printing box's height (it does not resize the image)
   - 4- Alignment code (you can find the codes [here](#alignment-codes))
 - **printBarcode(barcodeType, barcodeData):** this will print a barcode accordingly to the given type and data (you can find the barcode types code [here](#barcode-types-code))
+- **printQRCode(size, eccLv, data):** this will print the QRCode accordingly to the given size (allowed values 1, 4, 6, 8, 10, 12, 14), error collection control level (allowed values 1 (L 7%), 2 (M 15%), 3 (Q 25%), 4 (H 30%) and data.
 
 ### Reported Working Printer Models
 
