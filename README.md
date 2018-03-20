@@ -70,7 +70,6 @@ function printSomeTestText() {
 
 function printMyImage() {
   var image = new Image();
-  image.src = 'img/some_image.jpg';
   image.onload = function() {
       var canvas = document.createElement('canvas');
       canvas.height = 100;
@@ -91,6 +90,7 @@ function printMyImage() {
           }
       )
   };
+  image.src = 'img/some_image.jpg';
 }
 
 function printMyBarcode() {
