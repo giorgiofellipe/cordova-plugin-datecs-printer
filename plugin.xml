@@ -29,7 +29,7 @@
             <uses-permission android:name="android.permission.READ_PHONE_STATE" />
         </config-file>
 
-        <source-file src="src/android/com.datecs.api.jar" target-dir="libs" framework="true" />
+        <lib-file src="src/android/com.datecs.api.jar" arch="device" />
         <source-file src="src/android/DatecsPrinter.java" target-dir="src/com/giorgiofellipe/datecsprinter" />
         <source-file src="src/android/DatecsSDKWrapper.java" target-dir="src/com/giorgiofellipe/datecsprinter" />
         <source-file src="src/android/DatecsUtil.java" target-dir="src/com/giorgiofellipe/datecsprinter" />
