@@ -220,6 +220,12 @@ window.broadcaster.addEventListener( "DatecsPrinter.connectionStatus", function(
   if (e.isConnected) {
     //do something
   }
+  if (!e.hasPaper) {
+    //do something
+  }
+  if (e.lowBattery) {
+    //do something
+  }
 });
 ```
 

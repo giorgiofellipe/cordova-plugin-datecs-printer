@@ -81,10 +81,8 @@ public class DatecsSDKWrapper {
 
         @Override
         public void onBatteryStateChanged(boolean lowBattery) {
-            if (lowBattery) {
-                sendStatusUpdate(true, true, false);
-                showToast(DatecsUtil.getStringFromStringResource(app, "low_battery"));
-            }
+            sendStatusUpdate(true, true, lowBattery);
+            showToast(DatecsUtil.getStringFromStringResource(app, "low_battery"));
         }
     };
 
@@ -392,6 +390,7 @@ public class DatecsSDKWrapper {
             mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(4, e));
         }
     }
@@ -417,6 +416,8 @@ public class DatecsSDKWrapper {
             mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage());
             mCallbackContext.error(this.getErrorByCode(5, e));
         }
     }
@@ -441,6 +442,7 @@ public class DatecsSDKWrapper {
             mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(21, e));
         }
     }
@@ -453,6 +455,7 @@ public class DatecsSDKWrapper {
             int status = mPrinter.getStatus();
             mCallbackContext.success(status);
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(6, e));
         }
     }
@@ -465,6 +468,7 @@ public class DatecsSDKWrapper {
             int temperature = mPrinter.getTemperature();
             mCallbackContext.success(temperature);
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(7, e));
         }
     }
@@ -474,6 +478,7 @@ public class DatecsSDKWrapper {
             mPrinter.setBarcode(align, small, scale, hri, height);
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(10, e));
         }
     }
@@ -490,6 +495,7 @@ public class DatecsSDKWrapper {
             mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(8, e));
         }
     }
@@ -507,6 +513,7 @@ public class DatecsSDKWrapper {
             mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(22, e));
         }
     }
@@ -521,6 +528,7 @@ public class DatecsSDKWrapper {
             mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(9, e));
         }
     }
@@ -530,6 +538,7 @@ public class DatecsSDKWrapper {
             mPrinter.drawPageRectangle(x, y, width, height, fillMode);
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(12, e));
         }
     }
@@ -539,6 +548,7 @@ public class DatecsSDKWrapper {
             mPrinter.drawPageFrame(x, y, width, height, fillMode, thickness);
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(16, e));
         }
     }
@@ -548,6 +558,7 @@ public class DatecsSDKWrapper {
             mPrinter.selectStandardMode();
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(13, e));
         }
     }
@@ -557,6 +568,7 @@ public class DatecsSDKWrapper {
             mPrinter.selectPageMode();
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(14, e));
         }
     }
@@ -567,6 +579,7 @@ public class DatecsSDKWrapper {
             mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(17, e));
         }
     }
@@ -576,6 +589,7 @@ public class DatecsSDKWrapper {
             mPrinter.setPageRegion(x, y, width, height, direction);
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(15, e));
         }
     }
@@ -606,6 +620,7 @@ public class DatecsSDKWrapper {
             mPrinter.flush();
             mCallbackContext.success();
         } catch (Exception e) {
+            e.printStackTrace();
             mCallbackContext.error(this.getErrorByCode(11, e));
         }
     }
@@ -653,12 +668,12 @@ public class DatecsSDKWrapper {
      */
     private void showError(final String text, boolean resetConnection) {
         //we'l ignore toasts at the moment
-//        mCordova.getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Toast.makeText(mCordova.getActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-//            }
-//        });
+    //    mCordova.getActivity().runOnUiThread(new Runnable() {
+    //        @Override
+    //        public void run() {
+    //            Toast.makeText(mCordova.getActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+    //        }
+    //    });
         if (resetConnection) {
             connect(mConnectCallbackContext);
         }
@@ -690,8 +705,9 @@ public class DatecsSDKWrapper {
         final Intent intent = new Intent("DatecsPrinter.connectionStatus");
 
         Bundle b = new Bundle();
-        b.putString( "userdata", "{ isConnected: "+ isConnected + ", hasPaper: "+ hasPaper + ", lowBattery: "+ lowBattery + "}" );
-
+        b.putBoolean("isConnected", isConnected);
+        b.putBoolean("hasPaper", hasPaper);
+        b.putBoolean("lowBattery", lowBattery);
         intent.putExtras(b);
 
         LocalBroadcastManager.getInstance(mWebView.getContext()).sendBroadcastSync(intent);
