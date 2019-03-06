@@ -327,10 +327,19 @@ public class Printer {
             return (buffer[1] & 255) - 32;
         }
     }
-
+    
     public int getStatus() throws IOException {
         int status = 0;
-        try {
+        try {   
+            synchronized(this) {
+                this.clear();
+                this.output(new byte[]{(byte)16, (byte)4, (byte)1});
+                byte[] buffer = new byte[1];
+                this.request(buffer.length, 1000);
+                System.arraycopy(this.mDataBuffer, 0, buffer, 0, buffer.length);
+                status = (buffer[0] & 255) - 18;
+            }
+        } catch (Exception e) {
             PrinterInformation pi = getInformation();
             //if is a DATECS printer
             if (pi.getModel() >= 0) {
@@ -343,16 +352,7 @@ public class Printer {
                     status = buffer[0] & 255;
                 }
             } else {
-                throw new Exception();
-            }
-        } catch (Exception e) {
-            synchronized(this) {
-                this.clear();
-                this.output(new byte[]{(byte)16, (byte)4, (byte)1});
-                byte[] buffer = new byte[1];
-                this.request(buffer.length, 1000);
-                System.arraycopy(this.mDataBuffer, 0, buffer, 0, buffer.length);
-                status = (buffer[0] & 255) - 18;
+                throw new IOException();
             }
         }
         return status;

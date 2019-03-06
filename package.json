@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-datecs-printer",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Cordova Datecs Printer Plugin",
   "cordova": {
     "id": "cordova-plugin-datecs-printer",
