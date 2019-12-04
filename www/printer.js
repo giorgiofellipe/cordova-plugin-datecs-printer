@@ -72,6 +72,9 @@ var printer = {
   },
   writeHex: function (hex, onSuccess, onError) {
     exec(onSuccess, onError, 'DatecsPrinter', 'writeHex', [hex]);
+  },
+  disableItalicMode: function (onSuccess, onError) {
+    exec(onSuccess, onError, 'DatecsPrinter', 'disableItalicMode', []);
   }
 };
 module.exports = printer;

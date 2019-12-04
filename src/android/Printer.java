@@ -169,6 +169,7 @@ public class Printer {
         this.mSettings.barcodeHeight = 162;
         this.mSettings.barcodeHriFont = 0;
         this.mSettings.barcodeHriCode = 0;
+        this.mSettings.isItalicSupported = true;
     }
 
     public synchronized void write(int b) throws IOException {
@@ -593,9 +594,12 @@ public class Printer {
             tbuf[toffs] = 27;
             tbuf[var32++] = 33;
             tbuf[var32++] = mode;
-            tbuf[var32++] = 27;
-            tbuf[var32++] = 73;
-            tbuf[var32++] = 0;
+
+            if(this.mSettings.isItalicSupported) {
+                tbuf[var32++] = 27;
+                tbuf[var32++] = 73;
+                tbuf[var32++] = 0;
+            }
 
             for(int i = 0; i < len; ++i) {
                 byte value = b[i];
@@ -685,18 +689,23 @@ public class Printer {
                         tbuf[var32++] = mode;
                     } else if(tmp == ITALIC) {
                         var32 = pos - 1;
-                        tbuf[var32++] = 27;
-                        tbuf[var32++] = 73;
-                        tbuf[var32++] = (byte)(set?1:0);
+                        if(this.mSettings.isItalicSupported) {
+                            tbuf[var32++] = 27;
+                            tbuf[var32++] = 73;
+                            tbuf[var32++] = (byte)(set?1:0);
+                        }
                     } else if(tmp == RESET) {
                         mode = 0;
                         var32 = pos - 1;
                         tbuf[var32++] = 27;
                         tbuf[var32++] = 33;
                         tbuf[var32++] = mode;
-                        tbuf[var32++] = 27;
-                        tbuf[var32++] = 73;
-                        tbuf[var32++] = 0;
+
+                        if(this.mSettings.isItalicSupported) {
+                            tbuf[var32++] = 27;
+                            tbuf[var32++] = 73;
+                            tbuf[var32++] = 0;
+                        }
                     } else if(tmp == LEFT) {
                         var32 = pos - 1;
                         tbuf[var32++] = 27;
@@ -1511,12 +1520,18 @@ public class Printer {
         void onDisconnect();
     }
 
+    public void disableItalicMode() {
+        this.mSettings.isItalicSupported = false;
+    }
+
+
     private class Settings {
         public int barcodeAlign;
         public int barcodeScale;
         public int barcodeHeight;
         public int barcodeHriFont;
         public int barcodeHriCode;
+        public boolean isItalicSupported;
 
         private Settings() {
         }

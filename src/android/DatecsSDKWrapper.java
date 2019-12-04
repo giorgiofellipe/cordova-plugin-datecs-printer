@@ -625,6 +625,10 @@ public class DatecsSDKWrapper {
         }
     }
 
+    public void disableItalicMode() {
+        mPrinter.disableItalicMode();
+    }
+
     /**
      * Wrapper para criação de Threads
      *
