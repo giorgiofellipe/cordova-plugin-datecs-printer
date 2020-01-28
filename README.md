@@ -1,6 +1,6 @@
-# cordova-plugin-datecs-printer
+## ⚠️ This plugin is not being actively maintained. Any help is welcome.
 
-### **PLEASE ASK QUESTIONS ON [STACKOVERFLOW](https://stackoverflow.com) MENTIONING cordova-plugin-datecs-printer AND USING THE TAGS cordova-plugins AND escpos**
+# cordova-plugin-datecs-printer (Android only)
 
 The first thing that you must know is that the plugin is available through this variable `window.DatecsPrinter`.
 
